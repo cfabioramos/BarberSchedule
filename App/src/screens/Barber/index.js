@@ -6,6 +6,8 @@ import Stars from "../../components/Stars";
 
 import FavoriteIcon from "../../assets/favorite.svg";
 import BackIcon from "../../assets/back.svg";
+import NavPrevIcon from "../../assets/nav_prev.svg";
+import NavNextIcon from "../../assets/nav_next.svg";
 
 import {
   Container,
@@ -26,6 +28,10 @@ import {
   ServiceChooseButton,
   ServiceChooseBtnText,
   TestimonialArea,
+  TestimonialItem,
+  TestimonialInfo,
+  TestimonialName,
+  TestimonialBody,
   SwipeDot,
   SwipeDotActive,
   SwipeItem,
@@ -45,7 +51,6 @@ export default () => {
     avatar: route.params.avatar,
     name: route.params.name,
     stars: route.params.stars,
-    services: []
   });
 
   const [loading, setLoading] = useState(false);
@@ -104,22 +109,48 @@ export default () => {
 
           {loading && <LoadingIcon size="large" color="#000000" />}
 
-          <ServiceArea>
-            <ServiceTitle>Lista de serviços</ServiceTitle>
-            {userInfo.services.map((item, key) => (
-              <ServiceItem key={key}>
-                <ServiceInfo>
-                  <ServiceName>{item.name}</ServiceName>
-                  <ServicePrice>R$ {item.price}</ServicePrice>
-                </ServiceInfo>
-                <ServiceChooseButton>
-                  <ServiceChooseBtnText>Agendar</ServiceChooseBtnText>
-                </ServiceChooseButton>
-              </ServiceItem>
-            ))}
-          </ServiceArea>
+          {userInfo.services && userInfo.services.length > 0 && (
+            <ServiceArea>
+              <ServiceTitle>Lista de serviços</ServiceTitle>
+              {userInfo.services.map((item, key) => (
+                <ServiceItem key={key}>
+                  <ServiceInfo>
+                    <ServiceName>{item.name}</ServiceName>
+                    <ServicePrice>R$ {item.price}</ServicePrice>
+                  </ServiceInfo>
+                  <ServiceChooseButton>
+                    <ServiceChooseBtnText>Agendar</ServiceChooseBtnText>
+                  </ServiceChooseButton>
+                </ServiceItem>
+              ))}
+            </ServiceArea>
+          )}
 
-          <TestimonialArea></TestimonialArea>
+          {userInfo.testimonials && userInfo.testimonials.length > 0 && (
+            <TestimonialArea>
+              <Swiper
+                style={{ height: 110 }}
+                showsPagination={false}
+                showsButtons={true}
+                prevButton={
+                  <NavPrevIcon width="35" height="35" fill="#000000" />
+                }
+                nextButton={
+                  <NavNextIcon width="35" height="35" fill="#000000" />
+                }
+              >
+                {userInfo.testimonials.map((item, key) => (
+                  <TestimonialItem key={key}>
+                    <TestimonialInfo>
+                      <TestimonialName>{item.name}</TestimonialName>
+                      <Stars stars={item.rate} showNumber={false} />
+                    </TestimonialInfo>
+                    <TestimonialBody>{item.body}</TestimonialBody>
+                  </TestimonialItem>
+                ))}
+              </Swiper>
+            </TestimonialArea>
+          )}
         </PageBody>
       </Scroller>
       <BackButton onPress={handleBackButton}>
