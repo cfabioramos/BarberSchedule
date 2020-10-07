@@ -18,6 +18,13 @@ import {
   UserInfoName,
   UserFavButton,
   ServiceArea,
+  ServiceTitle,
+  ServiceItem,
+  ServiceInfo,
+  ServiceName,
+  ServicePrice,
+  ServiceChooseButton,
+  ServiceChooseBtnText,
   TestimonialArea,
   SwipeDot,
   SwipeDotActive,
@@ -25,12 +32,6 @@ import {
   SwipeImage,
   BackButton,
   LoadingIcon,
-  ServiceItem,
-  ServiceInfo,
-  ServiceName,
-  ServicePrice,
-  ServiceChooseButton,
-  ServiceChooseBtnText,
 } from "./styles";
 
 import Api from "../../Api";
@@ -44,6 +45,7 @@ export default () => {
     avatar: route.params.avatar,
     name: route.params.name,
     stars: route.params.stars,
+    services: []
   });
 
   const [loading, setLoading] = useState(false);
@@ -103,7 +105,7 @@ export default () => {
           {loading && <LoadingIcon size="large" color="#000000" />}
 
           <ServiceArea>
-            <ServicesTitle>Lista de serviços</ServicesTitle>
+            <ServiceTitle>Lista de serviços</ServiceTitle>
             {userInfo.services.map((item, key) => (
               <ServiceItem key={key}>
                 <ServiceInfo>

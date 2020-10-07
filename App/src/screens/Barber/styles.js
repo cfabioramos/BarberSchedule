@@ -90,6 +90,14 @@ export const UserFavButton = styled.TouchableOpacity`
 
 export const ServiceArea = styled.View``;
 
+export const ServiceTitle = styled.Text`
+    font-size: 18px;
+    font-weight: bold;
+    color: #268596;
+    margin-left: 30px;
+    margin-bottom: 20px;
+`;
+
 export const ServiceItem =  styled.View`
     flex-direction: row;
     margin-left: 30px;
