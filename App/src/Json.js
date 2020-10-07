@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Barbers = {
+export const JsonBarbers = {
   error: "",
   data: [
     {
@@ -97,7 +97,7 @@ export const Barbers = {
   loc: "Salvador",
 };
 
-export const BarberId = {
+export const JsonBarberId = {
   error: "",
   data: {
     id: 4,

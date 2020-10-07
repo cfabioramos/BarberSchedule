@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { add } from "react-native-reanimated";
-import { Barbers, BarberId } from './Json'
+import { JsonBarbers, JsonBarberId } from './Json'
 
 const BASE_API = "http://localhost:3000";
 
@@ -73,7 +73,7 @@ export default {
     // const req = await fetch(`${BASE_API}/barbers?token=${token}&lat=${lat}&lng=${lng}&address=${address}`);
     // const json = await req.json();
     // console.log(json);
-    return Barbers;
+    return JsonBarbers;
   },
 
   getBarber: async (id) => {
@@ -81,6 +81,19 @@ export default {
     // const req = await fetch(`${BASE_API}/barbers/${id}?token=${token}`);
     // const json = await req.json();
     // console.log(json);
-    return BarberId;
+    return JsonBarberId;
   },
+  
+  setFavoriteBarber: async (barberId) => {
+    /*const token = await AsyncStorage.getItem("token");
+    const req = await fetch(`${BASE_API}/barbers/${id}/favorite?token=${token}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }
+    });
+    return req;*/
+    return {error: ''}
+  }
 };
