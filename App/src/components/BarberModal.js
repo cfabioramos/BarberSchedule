@@ -170,7 +170,7 @@ export default ({ show, setShow, data, service }) => {
             }
 
             setListDays(newListDays)
-            setSelectedDay(1)
+            setSelectedDay(0)
             setListHours([])
             setSelectedHour(0)
         }
@@ -243,7 +243,7 @@ export default ({ show, setShow, data, service }) => {
                                 <NavPrevIcon width="35" height="35" fill="#000000"/>
                             </DatePrevArea>
                             <DateTitleArea>
-                                <DateTitle>{months[selectedMonth]} {selectedYear}</DateTitle>
+                                <DateTitle>   {months[selectedMonth]} {selectedYear}</DateTitle>
                             </DateTitleArea>
                             <DateNextArea onPress={handleRightDateClick}>
                                 <NavNextIcon width="35" height="35" fill="#000000"/>
@@ -255,11 +255,18 @@ export default ({ show, setShow, data, service }) => {
                                     <DateItem key={key} 
                                         onPress={()=>item.status ? setSelectedDay(item.number) : null}
                                         style={{
-                                            opacity: item.status ? 1 : 0.5,
                                             backgroundColor: item.number === selectedDay ? '#4EADBE' : '#FFFFFF'
                                         }}>
-                                        <DateItemWeekDay>{item.weekday}</DateItemWeekDay>
-                                        <DateItemWeekNumber>{item.number}</DateItemWeekNumber>
+                                        <DateItemWeekDay
+                                            style={{
+                                                opacity: item.status ? 1 : 0.5,
+                                                color: item.number === selectedDay ? '#FFFFFF' : '#000000'
+                                            }}>{item.weekday}</DateItemWeekDay>
+                                        <DateItemWeekNumber
+                                            style={{
+                                                opacity: item.status ? 1 : 0.5,
+                                                color: item.number === selectedDay ? '#FFFFFF' : '#000000'
+                                            }}>{item.number}</DateItemWeekNumber>
                                     </DateItem>
                                 ))
                             }
