@@ -132,7 +132,7 @@ export const JsonBarberId = {
         id: 13,
         id_barber: 4,
         name: "Corte de Unha",
-        price: 88.72,
+        price: 88.4,
       },
       {
         id: 14,
