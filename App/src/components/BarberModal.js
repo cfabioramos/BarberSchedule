@@ -128,6 +128,20 @@ const DateItemWeekNumber = styled.Text`
     font-weight: bold;
 `
 
+const TimeList = styled.ScrollView``
+
+const TimeItem = styled.TouchableOpacity`
+    width: 75px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+`
+
+const TimeItemText = styled.Text`
+    font-size: 16px;
+`
+
 const months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 
 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
@@ -198,7 +212,7 @@ export default ({ show, setShow, data, service }) => {
         mountDate.setMonth(mountDate.getMonth() - 1)
         setSelectedYear(mountDate.getFullYear())
         setSelectedMonth(mountDate.getMonth())
-        setSelectedDay(1)
+        setSelectedDay(0)
     }
 
     const handleRightDateClick = () => {
@@ -206,7 +220,7 @@ export default ({ show, setShow, data, service }) => {
         mountDate.setMonth(mountDate.getMonth() + 1)
         setSelectedYear(mountDate.getFullYear())
         setSelectedMonth(mountDate.getMonth())
-        setSelectedDay(1)
+        setSelectedDay(0)
     }
 
     return (
@@ -272,6 +286,20 @@ export default ({ show, setShow, data, service }) => {
                             }
                         </DateList>
                     </ModalItem>
+
+                    {listHours.length > 0 &&
+                        <ModalItem>
+                            <TimeList horizontal={true} showsHorizontalScrollIndicator={false}>
+                                {listHours.map((item, key) => (
+                                    <TimeItem
+                                        key={key}
+                                        onPress={()=>{}}>
+                                        <TimeItemText>{item}</TimeItemText>
+                                    </TimeItem>
+                                ))}
+                            </TimeList>
+                        </ModalItem>
+                    }
 
                     <FinishButton onPress={handleFinishClick}>
                         <FinishButtonText>Confirmar Agendamento</FinishButtonText>
