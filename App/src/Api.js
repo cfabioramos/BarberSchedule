@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { add } from "react-native-reanimated";
-import { JsonBarbers, JsonBarberId } from './Json'
+import { JsonBarbers, JsonBarberId, Appointments } from './Json'
 
 const BASE_API = "http://localhost:3000";
 
@@ -100,7 +100,7 @@ export default {
   createAppointment: async (barberId, service, selectedYear, 
     selectedMonth, selectedDay, selectedHour) => {
     /*const token = await AsyncStorage.getItem("token");
-    const req = await fetch(`${BASE_API}/barbers/${barberId}/appointment`, {
+    const req = await fetch(`${BASE_API}/barbers/${barberId}/appointments`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -117,6 +117,19 @@ export default {
     const json = await req.json()
     return json*/
     return {error: ''}
+  },
+
+  findAppointments: async () => {
+    /* const token = await AsyncStorage.getItem("token");
+    const req = await fetch(`${BASE_API}/appointments?token=${token}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      }
+    const json = await req.json()
+    return json */
+    return Appointments
   }
 
 };

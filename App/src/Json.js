@@ -218,3 +218,18 @@ export const JsonBarberId = {
     ],
   },
 };
+
+
+export const Appointments = {
+  error: "",
+  data: [
+    {
+      avatar: 'https://api.b7web.com.br/devbarber/media/avatars/3.png',
+      name: 'Carlos Fábio R Conceição',
+      serviceName: "Corte Masculinio",
+      servicePrice: 29.90,
+      scheduleDate: '25/08/2020',
+      scheduleTime: '13:00'
+    }
+  ]
+};
