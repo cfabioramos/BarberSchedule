@@ -81,13 +81,13 @@ export default () => {
     navigation.goBack();
   };
 
-  const handleFavClick = () => {
-    //let json = await Api.setFavoriteBarber(userInfo.id);
-    //if (json.error == "") {
+  const handleFavClick = async () => {
+    let json = await Api.setFavoriteBarber(userInfo.id);
+    if (json.error == "") {
       setFavorited( !favorited )
-    //} else {
-    //  alert("Erro: " + json.error);
-    //}
+    } else {
+      alert("Erro: " + json.error);
+    }
   }
 
   const handleServiceChoose = (key) => {
