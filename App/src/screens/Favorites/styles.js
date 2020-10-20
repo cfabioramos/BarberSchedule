@@ -12,6 +12,7 @@ export const Scroller = styled.ScrollView`
 `;
 
 export const HeaderArea = styled.View`
+  margin-left: -10;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
@@ -20,7 +21,7 @@ export const HeaderArea = styled.View`
 export const BackButton = styled.TouchableOpacity``;
 
 export const HeaderTitle = styled.Text`
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   color: #ffffff;
 `;

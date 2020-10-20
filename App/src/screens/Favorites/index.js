@@ -48,7 +48,7 @@ export default () => {
 
   const onRefresh = () => {
     setRefreshing(false);
-    getBarbers();
+    getFavoriteBarbers();
   };
 
   return (
@@ -60,7 +60,7 @@ export default () => {
       >
         <HeaderArea>
           <BackButton onPress={handleBackButton}>
-            <BackIcon width="44" height="44" fill="#FFFFFF" />
+            <BackIcon width="35" height="35" fill="#FFFFFF" />
           </BackButton>
           <HeaderTitle>Favoritos</HeaderTitle>
         </HeaderArea>
