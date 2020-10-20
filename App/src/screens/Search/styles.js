@@ -24,13 +24,14 @@ export const BackButton = styled.TouchableOpacity`
 
 export const HeaderInputArea = styled.View`
   background-color: #4eadbe;
-  height: 45px;
+  height: 40px;
   border-radius: 30px;
+  width: 310px;
 `;
 
 export const HeaderInput = styled.TextInput`
   flex: 1;
-  font-size: 16px;
+  font-size: 15px;
   color: #ffffff;
 `;
 
