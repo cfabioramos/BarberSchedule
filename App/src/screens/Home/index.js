@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Platform, RefreshControl } from "react-native";
+import { RefreshControl } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from 'expo-location';
 
