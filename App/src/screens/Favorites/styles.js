@@ -19,7 +19,7 @@ export const HeaderArea = styled.View`
 `;
 
 export const BackButton = styled.TouchableOpacity`
-    padding-right: 20px;
+  padding-right: 20px;
 `;
 
 export const HeaderTitle = styled.Text`
