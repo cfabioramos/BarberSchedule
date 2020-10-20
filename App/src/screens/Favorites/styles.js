@@ -12,13 +12,15 @@ export const Scroller = styled.ScrollView`
 `;
 
 export const HeaderArea = styled.View`
-  margin-left: -10;
+  margin-left: -10px;
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
 `;
 
-export const BackButton = styled.TouchableOpacity``;
+export const BackButton = styled.TouchableOpacity`
+    padding-right: 20px;
+`;
 
 export const HeaderTitle = styled.Text`
   font-size: 20px;
