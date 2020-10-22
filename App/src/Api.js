@@ -1,23 +1,53 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { add } from "react-native-reanimated";
-import { JsonBarbers, JsonBarberId, Appointments } from './Json'
+import { JsonBarbers, JsonBarberId, Appointments, Users } from './Json'
 
 const BASE_API = "http://localhost:3000";
 
 export default {
 
-  checkToken: async (token) => {
-    const req = await fetch(`${BASE_API}/auth/refresh`, {
-      method: "POST",
+  findUser: async (userName, password) => {
+    /* const token = await AsyncStorage.getItem("token");
+    const req = await fetch(`${BASE_API}/appointments?token=${token}`, {
+      method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ token }),
-    });
-    const json = await req.json();
-    console.log(json);
-    return json;
+      }
+    const json = await req.json()
+    return json */
+    const users = Users.data
+
+    const user = users.filter(e => e.userName == userName && e.password == password)
+
+    if (user.length) return user[0]
+
+    return null
+  },
+
+  checkToken: async (token) => {
+    /*
+      const req = await fetch(`${BASE_API}/auth/refresh`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token }),
+      });
+      const json = await req.json();
+      console.log(json);
+      return json;
+    */
+
+    const users = Users.data
+
+    const user = users.filter(e => e.token == 'admin_' + token)
+
+    if (user.length) return user[0]
+
+    return null
+
   },
 
   signIn: async (email, password) => {

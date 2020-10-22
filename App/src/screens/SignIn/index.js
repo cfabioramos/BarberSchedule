@@ -31,26 +31,19 @@ export default () => {
 
   const handleSignClick = async () => {
     if (emailField != "" && passwordField != "") {
-      // let json = await Api.signIn(emailField, passwordField);
-      var json = 
-        {
-            "error":"",
-            "data": {
-                "id":4,
-                "name":"Bonieky Testador",
-                "avatar":"https:\/\/api.b7web.com.br\/devbarber\/media\/avatars\/default.png",
-                "email":"boniekyteste@hotmail.com"
-            },
-            "token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmI3d2ViLmNvbS5iclwvZGV2YmFyYmVyXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjAxNzc4MzM0LCJleHAiOjE2MDE3ODE5MzQsIm5iZiI6MTYwMTc3ODMzNCwianRpIjoiRGFGZG1QcDJVYnpxWWxoVCIsInN1YiI6NCwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.CqXZ6Z22PC87mTABD1htMgGLfc8MKdAqIZ4eQ3TdWo8"
-        };
-
+      
+      //TODO temporario
+      //let json = await Api.signIn(emailField, passwordField);
+      let json = await Api.checkToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmI3d2ViLmNvbS5iclwvZGV2YmFyYmVyXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjAxNzc4MzM0LCJleHAiOjE2MDE3ODE5MzQsIm5iZiI6MTYwMTc3ODMzNCwianRpIjoiRGFGZG1QcDJVYnpxWWxoVCIsInN1YiI6NCwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.CqXZ6Z22PC87mTABD1htMgGLfc8MKdAqIZ4eQ3TdWo8')
+      
       if (json.token) {
-        await AsyncStorage.setItem("token", json.token);
+        await AsyncStorage.setItem("cfbarber_token", json.token);
 
         userDispatch({
-          type: "setAvatar",
+          type: "setUserContext",
           payload: {
-            avatar: json.data.avatar,
+            avatar: json.avatar,
+            isAdmin: json.isAdmin
           },
         });
 

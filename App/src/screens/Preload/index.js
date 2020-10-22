@@ -8,15 +8,28 @@ import BarberLogo from "../../assets/barber.svg";
 
 import Api from "../../Api";
 
+import { UserContext } from '../../contexts/UserContext'
+
 export default () => {
   const navigation = useNavigation();
 
+  const { dispatch: userDispatch } = useContext(UserContext);
+
   useEffect(() => {
     const checkToken = async () => {
-      const token = await AsyncStorage.getItem("cfbarber-token");
+      const token = await AsyncStorage.getItem("cfbarber_token");
       if (token) {
         let res = await Api.checkToken(token);
-        console.log(res)
+        if (res) {
+          userDispatch({
+            type: "setUserContext",
+            payload: {
+              avatar: json.avatar,
+              isAdmin: json.isAdmin
+            },
+          });
+        }
+        navigation.navigate("MainTab");
       } else {
         navigation.navigate("SignIn");
       }

@@ -219,7 +219,6 @@ export const JsonBarberId = {
   },
 };
 
-
 export const Appointments = {
   error: "",
   data: [
@@ -230,6 +229,28 @@ export const Appointments = {
       servicePrice: 29.90,
       scheduleDate: '25/08/2020',
       scheduleTime: '13:00'
+    }
+  ]
+};
+
+export const Users = {
+  error: "",
+  data: [
+    {
+      id: 1,
+      name: 'Admin',
+      avatar:"https:\/\/api.b7web.com.br\/devbarber\/media\/avatars\/default.png",
+      email: "admin@admin.com",
+      token:"admin_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmI3d2ViLmNvbS5iclwvZGV2YmFyYmVyXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjAxNzc4MzM0LCJleHAiOjE2MDE3ODE5MzQsIm5iZiI6MTYwMTc3ODMzNCwianRpIjoiRGFGZG1QcDJVYnpxWWxoVCIsInN1YiI6NCwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.CqXZ6Z22PC87mTABD1htMgGLfc8MKdAqIZ4eQ3TdWo8",
+      isAdmin: true
+    },
+    {
+      id: 2,
+      name: 'User',
+      avatar:"https:\/\/api.b7web.com.br\/devbarber\/media\/avatars\/default.png",
+      email: "admin@admin.com",
+      token:"user_eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmI3d2ViLmNvbS5iclwvZGV2YmFyYmVyXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjAxNzc4MzM0LCJleHAiOjE2MDE3ODE5MzQsIm5iZiI6MTYwMTc3ODMzNCwianRpIjoiRGFGZG1QcDJVYnpxWWxoVCIsInN1YiI6NCwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.CqXZ6Z22PC87mTABD1htMgGLfc8MKdAqIZ4eQ3TdWo8",
+      isAdmin: false
     }
   ]
 };
