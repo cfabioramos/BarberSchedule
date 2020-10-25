@@ -24,12 +24,14 @@ export default () => {
           userDispatch({
             type: "setUserContext",
             payload: {
-              avatar: json.avatar,
-              isAdmin: json.isAdmin
+              avatar: res.avatar,
+              isAdmin: res.isAdmin
             },
           });
+          navigation.navigate("MainTab");
+        } else {
+          navigation.navigate("SignUp");
         }
-        navigation.navigate("MainTab");
       } else {
         navigation.navigate("SignIn");
       }

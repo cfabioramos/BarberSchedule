@@ -3,36 +3,25 @@ import styled from "styled-components/native";
 
 export const Container = styled.SafeAreaView`
   flex: 1;
-  background-color: #63c2d1;
+  background-color: #ffffff;
 `;
 
-export const Scroller = styled.ScrollView`
+export const ColorsSet = styled.ScrollView`
+  flex-direction: column;
   flex: 1;
   padding: 20px;
 `;
 
-export const HeaderArea = styled.View`
-  margin-left: -10px;
+export const ColorsList = styled.View`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
 `;
 
-export const BackButton = styled.TouchableOpacity`
-  padding-right: 20px;
-`;
-
-export const HeaderTitle = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-  color: #ffffff;
-`;
-
-export const LoadingIcon = styled.ActivityIndicator`
-  margin-top: 50px;
-`;
-
-export const ListArea = styled.View`
-  margin-top: 30px;
-  margin-bottom: 30px;
+export const ColorPoint = styled.View`
+  border: 1px solid #ffffff;
+  border-radius: 10px;
+  width: 30px;
+  height: 30px;
+  background-color: ${props => props.color || "palevioletred"};
 `;

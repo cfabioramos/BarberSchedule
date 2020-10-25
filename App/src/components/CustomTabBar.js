@@ -87,7 +87,7 @@ export default ({ state, navigation }) => {
           />
         )}
       </TabItem>
-      {state.isAdmin && (
+      {user.isAdmin && (
         <TabItem onPress={() => goTo("ColorsPalette")}>
           <StarIcon
             style={{ opacity: state.index === 3 ? 1 : 0.5 }}
