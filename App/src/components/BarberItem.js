@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import Stars from "../components/Stars";
 
 const Area = styled.TouchableOpacity`
-  background-color: #ffffff;
+  background-color: ${props => props.color || "#efc8ef"};
   margin-bottom: 20px;
   border-radius: 20px;
   padding: 15px;

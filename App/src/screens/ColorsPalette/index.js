@@ -2,7 +2,7 @@ import React from "react";
 
 import { Container, ColorsSet, ColorsList, ColorPoint } from "./styles";
 
-export const VIOLET_PALLETE = ["#8b4488", "#b641a9", "violet", "#d6b2ce"];
+export const VIOLET_PALLETE = ["#8b4488", "#b641a9", "violet", "#d6b2ce", "efc8ef"];
 export const BLUE_PALLETE = ["#268596", "#4eadbe", "#63c2d1", "#83d6e3"];
 export const GREEN_PALLETE = ["#334d1d", "#558131", "#77b544", "#c1deaa"];
 
