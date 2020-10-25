@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 
 export const Container = styled.SafeAreaView`
     flex: 1;
-    background-color: #63C2D1;
+    background-color: violet;
 `;
 
 export const Scroller = styled.ScrollView`
@@ -30,7 +30,7 @@ export const SearchButton = styled.TouchableOpacity`
 `;
 
 export const LocationArea = styled.View`
-    background-color: #4EADBE;
+    background-color: #b641a9;
     height: 60px;
     border-radius: 30px;
     flex-direction: row;

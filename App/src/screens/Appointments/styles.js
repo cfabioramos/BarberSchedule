@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 
 export const Container = styled.SafeAreaView`
   flex: 1;
-  background-color: #63c2d1;
+  background-color: violet;
 `;
 
 export const Scroller = styled.ScrollView`
@@ -75,7 +75,7 @@ export const ScheduleDateButton = styled.View`
   border-radius: 10px;
   width: 110px;
   height: 40px;
-  background-color: #4eadbe;
+  background-color: #b641a9;
   justify-content: center;
   align-items: center;
 `;
@@ -84,7 +84,7 @@ export const ScheduleTimeButton = styled.View`
   border-radius: 10px;
   width: 60px;
   height: 40px;
-  background-color: #4eadbe;
+  background-color: #b641a9;
   justify-content: center;
   align-items: center;
 `;

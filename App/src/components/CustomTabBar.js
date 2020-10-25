@@ -12,7 +12,7 @@ import StarIcon from "../assets/star.svg";
 
 const TabArea = styled.View`
   height: 60px;
-  background-color: #4eadbe;
+  background-color: #b641a9;
   flex-direction: row;
 `;
 
@@ -29,7 +29,7 @@ const TabItemCenter = styled.TouchableOpacity`
   align-items: center;
   background-color: #fff;
   border-radius: 35px;
-  border: 3px solid #4eadbe;
+  border: 3px solid #b641a9;
   margin-top: -20px;
 `;
 
@@ -65,7 +65,7 @@ export default ({ state, navigation }) => {
         />
       </TabItem>
       <TabItemCenter onPress={() => goTo("Appointments")}>
-        <TodayIcon width="32" height="32" fill="#4EADBE" />
+        <TodayIcon width="32" height="32" fill="#b641a9" />
       </TabItemCenter>
       <TabItem onPress={() => goTo("Favorites")}>
         <FavoriteIcon

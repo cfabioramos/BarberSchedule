@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 
 export const Container = styled.SafeAreaView`
   flex: 1;
-  background-color: #63c2d1;
+  background-color: violet;
 `;
 
 export const Scroller = styled.ScrollView`
@@ -23,7 +23,7 @@ export const BackButton = styled.TouchableOpacity`
 `;
 
 export const HeaderInputArea = styled.View`
-  background-color: #4eadbe;
+  background-color: #b641a9;
   height: 40px;
   border-radius: 30px;
   width: 310px;

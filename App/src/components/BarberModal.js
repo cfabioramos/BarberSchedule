@@ -15,7 +15,7 @@ const ModalArea = styled.View`
 `;
 
 const ModalBody = styled.View`
-  background-color: #83d6e3;
+  background-color: #d6b2ce;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   min-height: 300px;
@@ -68,7 +68,7 @@ const ServicePrice = styled.Text`
 `;
 
 const FinishButton = styled.TouchableOpacity`
-  background-color: #268596;
+  background-color: #8b4488;
   height: 60px;
   justify-content: center;
   align-items: center;
@@ -317,7 +317,7 @@ export default ({ show, setShow, data, service }) => {
                   }
                   style={{
                     backgroundColor:
-                      item.number === selectedDay ? "#4EADBE" : "#FFFFFF",
+                      item.number === selectedDay ? "#b641a9" : "#FFFFFF",
                   }}
                 >
                   <DateItemWeekDay
@@ -355,7 +355,7 @@ export default ({ show, setShow, data, service }) => {
                     onPress={() => setSelectedHour(item)}
                     style={{
                       backgroundColor:
-                        item === selectedHour ? "#4EADBE" : "#FFFFFF",
+                        item === selectedHour ? "#b641a9" : "#FFFFFF",
                     }}
                   >
                     <TimeItemText

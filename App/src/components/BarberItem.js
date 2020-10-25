@@ -31,7 +31,7 @@ const UserName = styled.Text`
 const SeeProfileButton = styled.View`
   width: 85px;
   height: 26px;
-  border: 1px solid #4eadbe;
+  border: 1px solid #b641a9;
   border-radius: 10px;
   justify-content: center;
   align-items: center;
@@ -39,7 +39,7 @@ const SeeProfileButton = styled.View`
 
 const SeeProfileButtonText = styled.Text`
   font-size: 13px;
-  color: #268596;
+  color: #8b4488;
 `;
 
 export default ({ data }) => {

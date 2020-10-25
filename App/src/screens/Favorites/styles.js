@@ -3,7 +3,7 @@ import styled from "styled-components/native";
 
 export const Container = styled.SafeAreaView`
   flex: 1;
-  background-color: #63c2d1;
+  background-color: violet;
 `;
 
 export const Scroller = styled.ScrollView`
