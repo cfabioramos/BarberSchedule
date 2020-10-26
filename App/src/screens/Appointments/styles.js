@@ -17,7 +17,7 @@ export const AppointmentInfoArea = styled.View`
 
 export const AppointmentInfoItem = styled.View`
   flex-direction: column;
-  background-color: #ffffff;
+  background-color: ${props => props.color || "#efc8ef"};
   margin-left: 20px;
   margin-right: 20px;
   margin-bottom: 10px;
