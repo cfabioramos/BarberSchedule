@@ -42,7 +42,7 @@ export default {
 
     const users = Users.data
 
-    const user = users.filter(e => e.token == 'admin_' + token)
+    const user = users.filter(e => e.token == 'user_' + token)
 
     if (user.length) return user[0]
 
