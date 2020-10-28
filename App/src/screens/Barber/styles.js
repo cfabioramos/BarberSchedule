@@ -15,7 +15,7 @@ export const SwipeDot = styled.View`
     height: 10px;
     background-color: #FFFFFF;
     border-radius: 5px;
-    margin: 3px;
+    margin: 4px;
 `;
 
 export const SwipeDotActive = styled.View`
@@ -169,7 +169,7 @@ export const TestimonialBody = styled.Text`
 export const BackButton = styled.TouchableOpacity`
     position: absolute;
     left: 0;
-    top: 0;
+    top: 20;
     z-index: 9;
 `;
 

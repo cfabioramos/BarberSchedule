@@ -7,7 +7,7 @@ const BASE_API = "http://localhost:3000";
 export default {
 
   findUser: async (userName, password) => {
-    /* const token = await AsyncStorage.getItem("token");
+    /* const token = await AsyncStorage.getItem("cfbarber_token");
     const req = await fetch(`${BASE_API}/appointments?token=${token}`, {
       method: "GET",
       headers: {
@@ -65,7 +65,7 @@ export default {
   },
 
   logout: async () => {
-    const token = await AsyncStorage.getItem("token");
+    const token = await AsyncStorage.getItem("cfbarber_token");
 
     const req = await fetch(`${BASE_API}/auth/logout`, {
       method: "POST",
@@ -94,7 +94,7 @@ export default {
   },
 
   getBarbers: async (lat = null, lng = null, address = null) => {
-    const token = await AsyncStorage.getItem("token");
+    const token = await AsyncStorage.getItem("cfbarber_token");
     // const req = await fetch(`${BASE_API}/barbers?token=${token}&lat=${lat}&lng=${lng}&address=${address}`);
     // const json = await req.json();
     // console.log(json);
@@ -102,7 +102,7 @@ export default {
   },
 
   getBarber: async (id) => {
-    const token = await AsyncStorage.getItem("token");
+    const token = await AsyncStorage.getItem("cfbarber_token");
     // const req = await fetch(`${BASE_API}/barbers/${id}?token=${token}`);
     // const json = await req.json();
     // console.log(json);
@@ -110,7 +110,7 @@ export default {
   },
   
   setFavoriteBarber: async (barberId) => {
-    /*const token = await AsyncStorage.getItem("token");
+    /*const token = await AsyncStorage.getItem("cfbarber_token");
     const req = await fetch(`${BASE_API}/barbers/${id}/favorite?token=${token}`, {
       method: "PUT",
       headers: {
@@ -124,7 +124,7 @@ export default {
 
   createAppointment: async (barberId, service, selectedYear, 
     selectedMonth, selectedDay, selectedHour) => {
-    /*const token = await AsyncStorage.getItem("token");
+    /*const token = await AsyncStorage.getItem("cfbarber_token");
     const req = await fetch(`${BASE_API}/barbers/${barberId}/appointments`, {
       method: "POST",
       headers: {
@@ -145,7 +145,7 @@ export default {
   },
 
   findAppointments: async () => {
-    /* const token = await AsyncStorage.getItem("token");
+    /* const token = await AsyncStorage.getItem("cfbarber_token");
     const req = await fetch(`${BASE_API}/appointments?token=${token}`, {
       method: "GET",
       headers: {

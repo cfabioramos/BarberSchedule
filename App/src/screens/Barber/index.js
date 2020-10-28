@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Text } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Swiper from "react-native-swiper";
 import Stars from "../../components/Stars";
@@ -71,7 +70,6 @@ export default () => {
       } else {
         alert("Erro: " + json.error);
       }
-
       setLoading(false);
     };
     getBarberInfo();
@@ -103,7 +101,7 @@ export default () => {
             style={{ height: 240 }}
             dot={<SwipeDot />}
             activeDot={<SwipeDotActive />}
-            paginationStyle={{ top: 15, right: 15, bottom: null, left: null }}
+            paginationStyle={{ top: 25, right: 15, bottom: null, left: null }}
             autoplay={true}
           >
             {userInfo.photos.map((item, key) => (
