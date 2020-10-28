@@ -14,6 +14,7 @@ import {
 } from "./styles";
 
 import SignInput from "../../components/SignInput";
+import SignDropdown from "../../components/SignDropdown";
 
 import Api from "../../Api";
 
@@ -90,6 +91,8 @@ export default () => {
           onChangeText={(t) => setPasswordField(t)}
           password={true}
         />
+
+        <SignDropdown />
 
         <CustomButton onPress={handleSignClick}>
           <CustomButtonText>CADASTRAR</CustomButtonText>
