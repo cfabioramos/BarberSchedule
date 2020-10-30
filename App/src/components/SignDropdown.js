@@ -1,26 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import DropDownPicker from "react-native-dropdown-picker";
-import Icon from "react-native-vector-icons/Feather";
 import { VIOLET_PALLETE } from "../screens/ColorsPalette";
 
-const options = ["Cliente", "Barbeiro"];
-
-export default () => {
+export default ({ options, placeholder, onChangeValue }) => {
   return (
     <DropDownPicker
-      items={[
-        {
-          label: "Cliente",
-          value: "C",
-          icon: () => <Icon name="user" size={22} color={VIOLET_PALLETE[0]} />
-        },
-        {
-          label: "Estabelecimento",
-          value: "E",
-          icon: () => <Icon name="flag" size={22} color={VIOLET_PALLETE[0]} />,
-        },
-      ]}
-      placeholder="Eu sou..."
+      items={options}
+      placeholder={placeholder}
       containerStyle={{ height: 60, marginBottom: 15 }}
       style={{
         backgroundColor: VIOLET_PALLETE[3],
@@ -28,22 +14,23 @@ export default () => {
         borderTopRightRadius: 30,
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
-      }}
-      dropDownStyle={{
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
+        borderWidth: 0,
       }}
       itemStyle={{
-        justifyContent: "center",
+        justifyContent: "flex-start",
+      }}
+      dropDownStyle={{
+        backgroundColor: VIOLET_PALLETE[3],
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
+        borderWidth: 0,
       }}
       labelStyle={{
-        flex: 1,
-        fontSize: 16,
+        fontSize: 18,
         textAlign: "left",
         color: VIOLET_PALLETE[0],
       }}
-      dropDownStyle={{ backgroundColor: VIOLET_PALLETE[3] }}
-      onChangeItem={(item) => console.log(item.value)}
+      onChangeItem={(item) => onChangeValue(item.value)}
     />
   );
 };

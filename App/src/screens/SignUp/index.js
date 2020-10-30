@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
+import { VIOLET_PALLETE } from "../ColorsPalette";
 
 import { UserContext } from "../../contexts/UserContext";
 import {
@@ -22,6 +23,22 @@ import BarberLogo from "../../assets/barber_2.svg";
 import PersonIcon from "../../assets/person.svg";
 import EmailIcon from "../../assets/email.svg";
 import LockIcon from "../../assets/lock.svg";
+import Icon from "react-native-vector-icons/Feather";
+
+const dropDownOptions = [
+  {
+    label: "Cliente",
+    value: "C",
+    icon: () => <Icon name="user" size={22} color={VIOLET_PALLETE[0]} />,
+  },
+  {
+    label: "Estabelecimento",
+    value: "E",
+    icon: () => (
+      <Icon name="shopping-cart" size={22} color={VIOLET_PALLETE[0]} />
+    ),
+  },
+];
 
 export default () => {
   const { dispatch: userDispatch } = useContext(UserContext);
@@ -30,29 +47,33 @@ export default () => {
   const [nameField, setNameField] = useState("");
   const [emailField, setEmailField] = useState("");
   const [passwordField, setPasswordField] = useState("");
+  const [typeField, setTypeField] = useState("");
 
   const handleSignClick = async () => {
     if (nameField != "" && emailField != "" && passwordField != "") {
-      // TODO
-      // let res = await Api.signUp(nameField, emailField, passwordField);
-      let json = await Api.checkToken(
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmI3d2ViLmNvbS5iclwvZGV2YmFyYmVyXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjAxNzc4MzM0LCJleHAiOjE2MDE3ODE5MzQsIm5iZiI6MTYwMTc3ODMzNCwianRpIjoiRGFGZG1QcDJVYnpxWWxoVCIsInN1YiI6NCwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.CqXZ6Z22PC87mTABD1htMgGLfc8MKdAqIZ4eQ3TdWo8"
-      );
-      if (res.token) {
-        await AsyncStorage.setItem("token", res.token);
-        userDispatch({
-          type: "setUserContext",
-          payload: {
-            avatar: json.avatar,
-            isAdmin: json.isAdmin,
-          },
-        });
-
-        navigation.reset({
-          routes: [{ name: "MainTab" }],
-        });
+      if (typeField == "") {
+        alert("Informe se é cliente ou estabelecimento");  
       } else {
-        alert("Erro: " + res.error);
+        // let res = await Api.signUp(nameField, emailField, passwordField);
+        let json = await Api.checkToken(
+          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmI3d2ViLmNvbS5iclwvZGV2YmFyYmVyXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjAxNzc4MzM0LCJleHAiOjE2MDE3ODE5MzQsIm5iZiI6MTYwMTc3ODMzNCwianRpIjoiRGFGZG1QcDJVYnpxWWxoVCIsInN1YiI6NCwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.CqXZ6Z22PC87mTABD1htMgGLfc8MKdAqIZ4eQ3TdWo8"
+        );
+        if (res.token) {
+          await AsyncStorage.setItem("token", res.token);
+          userDispatch({
+            type: "setUserContext",
+            payload: {
+              avatar: json.avatar,
+              isAdmin: json.isAdmin,
+            },
+          });
+
+          navigation.reset({
+            routes: [{ name: "MainTab" }],
+          });
+        } else {
+          alert("Erro: " + res.error);
+        }
       }
     } else {
       alert("Preencha os campos");
@@ -92,7 +113,11 @@ export default () => {
           password={true}
         />
 
-        <SignDropdown />
+        <SignDropdown
+          options={dropDownOptions}
+          placeholder="Eu sou..."
+          onChangeValue={setTypeField}
+        />
 
         <CustomButton onPress={handleSignClick}>
           <CustomButtonText>CADASTRAR</CustomButtonText>
