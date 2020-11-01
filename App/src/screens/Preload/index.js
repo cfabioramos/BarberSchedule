@@ -25,7 +25,7 @@ export default () => {
             type: "setUserContext",
             payload: {
               avatar: res.avatar,
-              isAdmin: res.isAdmin
+              type: res.type
             },
           });
           navigation.navigate("MainTab");

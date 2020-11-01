@@ -1,14 +1,14 @@
 export const initialState = {
-  avatar: "",
+  avatar: '',
   favorites: [],
   appointments: [],
-  isAdmin: false
+  type: ''
 };
 
 export const UserReducer = (state, action) => {
   switch (action.type) {
     case "setUserContext":
-      return { ...state, avatar: action.payload.avatar, isAdmin: action.payload.isAdmin };
+      return { ...state, avatar: action.payload.avatar, type: action.payload.type };
       break;
     default:
       return state;

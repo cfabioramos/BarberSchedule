@@ -64,7 +64,7 @@ export default () => {
             type: "setUserContext",
             payload: {
               avatar: json.avatar,
-              isAdmin: json.isAdmin,
+              type: json.type,
             },
           });
 
