@@ -16,7 +16,7 @@ import {
 
 import Api from '../../Api';
 
-import SignInput from "../../components/SignInput";
+import InputComponent from "../../components/InputComponent";
 
 import BarberLogo from "../../assets/barber_2.svg";
 import EmailIcon from "../../assets/email.svg";
@@ -69,14 +69,14 @@ export default () => {
       <BarberLogo width="100%" height="23%" />
 
       <InputArea>
-        <SignInput
+        <InputComponent
           IconSvg={EmailIcon}
           placeholder="Digite seu e-mail"
           value={emailField}
           onChangeText={t => setEmailField(t)}
         />
 
-        <SignInput
+        <InputComponent
           IconSvg={LockIcon}
           placeholder="Digite sua senha"
           value={passwordField}

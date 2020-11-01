@@ -10,6 +10,7 @@ import Search from "../screens/Search";
 import Appointments from "../screens/Appointments";
 import Favorites from "../screens/Favorites";
 import Profile from "../screens/Profile";
+import EstablishmentProfile from '../screens/EstablishmentProfile'
 import ColorsPalette from "../screens/ColorsPalette";
 
 const Tab = createBottomTabNavigator();
@@ -30,7 +31,7 @@ export default () => {
         </Tab.Navigator>
       ) : (
         <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
-          <Tab.Screen name="Profile" component={Profile} />
+          <Tab.Screen name="EstablishmentProfile" component={EstablishmentProfile} />
         </Tab.Navigator>
       )}
     </>

@@ -14,7 +14,7 @@ import {
   SignMessageButtonTextBold,
 } from "./styles";
 
-import SignInput from "../../components/SignInput";
+import InputComponent from "../../components/InputComponent";
 import SignDropdown from "../../components/SignDropdown";
 
 import Api from "../../Api";
@@ -91,21 +91,21 @@ export default () => {
       <BarberLogo width="100%" height="160" />
 
       <InputArea>
-        <SignInput
+        <InputComponent
           IconSvg={PersonIcon}
           placeholder="Digite seu nome"
           value={nameField}
           onChangeText={(t) => setNameField(t)}
         />
 
-        <SignInput
+        <InputComponent
           IconSvg={EmailIcon}
           placeholder="Digite seu e-mail"
           value={emailField}
           onChangeText={(t) => setEmailField(t)}
         />
 
-        <SignInput
+        <InputComponent
           IconSvg={LockIcon}
           placeholder="Digite sua senha"
           value={passwordField}
