@@ -42,7 +42,7 @@ export default {
 
     const users = Users.data;
 
-    const user = users.filter((e) => e.token == "user_" + token);
+    const user = users.filter((e) => e.token == "establishment_" + token);
 
     if (user.length) return user[0];
 
@@ -162,20 +162,21 @@ export default {
     return Appointments;
   },
 
-  updateEstablishmentData: (formData) => {
-    fetch("http://localhost:3000/api/upload", {
-      method: "POST",
+  updateEstablishmentData: async (formData) => {
+    const token = await AsyncStorage.getItem("cfbarber_token");
+    fetch(`${BASE_API}/establishment?token=${token}`, {
+      method: "PUT",
       body: formData,
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log("upload succes", response);
-        alert("Upload success!");
+        // console.log("upload succes", response);
+        alert("Dados atualizados com sucesso");
         this.setState({ photo: null });
       })
       .catch((error) => {
-        console.log("upload error", error);
-        alert("Upload failed!");
+        console.log("Erro ", error);
+        alert("Erro na atualização");
       });
   },
 };

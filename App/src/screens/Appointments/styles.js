@@ -37,6 +37,7 @@ export const UserAvatar = styled.Image`
   border-radius: 30px;
   border-width: 4px;
   border-color: #ffffff;
+  margin-right: 10px;
 `;
 
 export const UserName = styled.Text`

@@ -32,6 +32,8 @@ export default () => {
       ) : (
         <Tab.Navigator tabBar={(props) => <CustomTabBar {...props} />}>
           <Tab.Screen name="EstablishmentProfile" component={EstablishmentProfile} />
+          <Tab.Screen name="Appointments" component={Appointments} />
+          <Tab.Screen name="ColorsPalette" component={ColorsPalette} />
         </Tab.Navigator>
       )}
     </>

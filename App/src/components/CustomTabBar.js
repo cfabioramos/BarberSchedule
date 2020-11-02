@@ -9,6 +9,7 @@ import TodayIcon from "../assets/today.svg";
 import FavoriteIcon from "../assets/favorite.svg";
 import AccountIcon from "../assets/account.svg";
 import StarIcon from "../assets/star.svg";
+import { VIOLET_PALLETE } from '../screens/ColorsPalette'
 
 const TabArea = styled.View`
   height: 60px;
@@ -66,8 +67,9 @@ export default ({ state, navigation }) => {
               fill="#FFFFFF"
             />
           </TabItem>
+
           <TabItemCenter onPress={() => goTo("Appointments")}>
-            <TodayIcon width="32" height="32" fill="#b641a9" />
+            <TodayIcon width="32" height="32" fill={VIOLET_PALLETE[1]} />
           </TabItemCenter>
 
           <TabItem onPress={() => goTo("Favorites")}>
@@ -116,6 +118,17 @@ export default ({ state, navigation }) => {
                 fill="#FFFFFF"
               />
             )}
+          </TabItem>
+          <TabItemCenter onPress={() => goTo("Appointments")}>
+            <TodayIcon width="32" height="32" fill={VIOLET_PALLETE[1]} />
+          </TabItemCenter>
+          <TabItem onPress={() => goTo("ColorsPalette")}>
+            <StarIcon
+              style={{ opacity: state.index === 5 ? 1 : 0.5 }}
+              width="24"
+              height="24"
+              fill="#FFFFFF"
+            />
           </TabItem>
         </TabArea>
       )}
