@@ -1,5 +1,4 @@
 import AsyncStorage from "@react-native-community/async-storage";
-import { add } from "react-native-reanimated";
 import { JsonBarbers, JsonBarberId, Appointments, Users } from './Json'
 
 const BASE_API = "http://localhost:3000";

@@ -53,7 +53,7 @@ export default ({ data }) => {
       name: data.name,
       stars: data.stars
     })
-  }  
+  }
 
   return (
     <Area onPress={handleClick}>
