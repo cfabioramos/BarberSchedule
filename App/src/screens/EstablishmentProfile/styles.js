@@ -14,14 +14,22 @@ export const InputArea = styled.View`
 `;
 
 export const CustomButton = styled.TouchableOpacity`
-    height: 60px;
-    background-color: #8b4488;
-    border-radius: 30px;
-    justify-content: center;
-    align-items: center;
+  height: 60px;
+  background-color: #8b4488;
+  border-radius: 30px;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const CustomButtonText = styled.Text`
-    font-size: 18px;
-    color: #FFF;
+  font-size: 18px;
+  color: #fff;
+`;
+
+export const ImageArea = styled.View`
+  margin-bottom: 10px;
+  justify-content: space-around;
+  width: 100%;
+  border-radius: 30px;
+  flex-direction: row;
 `;

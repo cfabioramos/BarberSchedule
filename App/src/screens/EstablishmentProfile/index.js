@@ -6,9 +6,8 @@ import Api from "../../Api";
 
 import InputComponent from "../../components/InputComponent";
 import ImagePickerComponent from "../../components/ImagePickerComponent";
-import { VIOLET_PALLETE } from "../ColorsPalette";
 
-import { Container, InputArea, CustomButton, CustomButtonText } from "./styles";
+import { Container, InputArea, CustomButton, CustomButtonText, ImageArea } from "./styles";
 
 import PersonIcon from "../../assets/person.svg";
 import LockIcon from "../../assets/lock.svg";
@@ -27,72 +26,95 @@ export default () => {
   const [imageFieldF, setImageFieldF] = useState(null);
 
   const handleUpdateClick = () => {
-    if (nameField &&
-      (imageFieldA || imageFieldB || imageFieldC || 
-        imageFieldD || imageFieldE || imageFieldF)) {
-
-          if (!actualPasswordField && newPasswordField) {
-            alert('Para alterar a senha é necessário informar a senha atual')
-          }
-          else {
-            updateEstablishmentData()
-          }
-
-    } else if (!nameField){
+    if (
+      nameField &&
+      (imageFieldA ||
+        imageFieldB ||
+        imageFieldC ||
+        imageFieldD ||
+        imageFieldE ||
+        imageFieldF)
+    ) {
+      if (!actualPasswordField && newPasswordField) {
+        alert("Para alterar a senha é necessário informar a senha atual");
+      } else {
+        updateEstablishmentData();
+      }
+    } else if (!nameField) {
       alert("O nome deve ser informado");
-    }
-    else {
+    } else {
       alert("Adicione ao menos uma imagem de capa");
-    } 
-    
+    }
+  };
+
+  const handleLogoutClick = () => {
+    // invalida o token
+    // await Api.logout()
+    navigation.reset({
+      routes: [{ name: "SignIn" }],
+    });
   };
 
   const updateEstablishmentData = () => {
-
-    const data = {}
-    data.name = nameField
-    data.actualPassword = actualPasswordField
-    data.newPassword = newPasswordField
-    data.images = []
+    const data = {};
+    data.name = nameField;
+    data.actualPassword = actualPasswordField;
+    data.newPassword = newPasswordField;
+    data.images = [];
 
     if (imageFieldA) {
-      data.images.push(Platform.OS === "android" ? imageFieldA : imageFieldA.replace("file://", ""))
+      data.images.push(
+        Platform.OS === "android"
+          ? imageFieldA
+          : imageFieldA.replace("file://", "")
+      );
     }
 
     if (imageFieldB) {
-      data.images.push(Platform.OS === "android" ? imageFieldB : imageFieldB.replace("file://", ""))
+      data.images.push(
+        Platform.OS === "android"
+          ? imageFieldB
+          : imageFieldB.replace("file://", "")
+      );
     }
 
     if (imageFieldC) {
-      data.images.push(Platform.OS === "android" ? imageFieldC : imageFieldC.replace("file://", ""))
+      data.images.push(
+        Platform.OS === "android"
+          ? imageFieldC
+          : imageFieldC.replace("file://", "")
+      );
     }
 
     if (imageFieldD) {
-      data.images.push(Platform.OS === "android" ? imageFieldD : imageFieldD.replace("file://", ""))
+      data.images.push(
+        Platform.OS === "android"
+          ? imageFieldD
+          : imageFieldD.replace("file://", "")
+      );
     }
 
     if (imageFieldE) {
-      data.images.push(Platform.OS === "android" ? imageFieldE : imageFieldE.replace("file://", ""))
+      data.images.push(
+        Platform.OS === "android"
+          ? imageFieldE
+          : imageFieldE.replace("file://", "")
+      );
     }
 
     if (imageFieldF) {
-      data.images.push(Platform.OS === "android" ? imageFieldF : imageFieldF.replace("file://", ""))
+      data.images.push(
+        Platform.OS === "android"
+          ? imageFieldF
+          : imageFieldF.replace("file://", "")
+      );
     }
 
-    console.log(data)
+    console.log(data);
 
     //TODO
     // Api.updateEstablishmentData()
-
-  }
-
-  const ImageArea = styled.View`
-    margin-bottom: 10px;
-    justify-content: space-around;
-    width: 100%;
-    border-radius: 30px;
-    flex-direction: row;
-  `;
+  };
 
   return (
     <Container>
@@ -151,6 +173,9 @@ export default () => {
 
         <CustomButton onPress={handleUpdateClick}>
           <CustomButtonText>ATUALIZAR</CustomButtonText>
+        </CustomButton>
+        <CustomButton onPress={handleLogoutClick}>
+          <CustomButtonText>SAIR</CustomButtonText>
         </CustomButton>
       </InputArea>
     </Container>
