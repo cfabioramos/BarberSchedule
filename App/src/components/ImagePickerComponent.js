@@ -49,7 +49,7 @@ export default ({imageField, setimageField}) => {
   return (
     <ImageItem onPress={pickImage}>
       {imageField ? (
-        <Image source={{ uri: imageField }} style={{ width: 80, height: 80 }} />
+        <Image source={{ uri: imageField }} style={{ width: 80, height: 80, borderRadius: 20 }} />
       ) : (
         <PickImageText>Imagem</PickImageText>
       )}
