@@ -19,8 +19,23 @@ export default () => {
   const [nameField, setNameField] = useState("");
   const [passwordField, setPasswordField] = useState("");
 
+  const [imageFieldA, setImageFieldA] = useState(null);
+  const [imageFieldB, setImageFieldB] = useState(null);
+  const [imageFieldC, setImageFieldC] = useState(null);
+  const [imageFieldD, setImageFieldD] = useState(null);
+  const [imageFieldE, setImageFieldE] = useState(null);
+  const [imageFieldF, setImageFieldF] = useState(null);
+
   const handleUpdateClick = () => {
-    console.log("Implementar acao de atualizar dados do estabelecimento");
+    const uriImageFieldA = Platform.OS === "android" ? imageFieldA : imageFieldA.replace("file://", "")
+    const uriImageFieldB = Platform.OS === "android" ? imageFieldB : imageFieldB.replace("file://", "")
+    const uriImageFieldC = Platform.OS === "android" ? imageFieldC : imageFieldC.replace("file://", "")
+    const uriImageFieldD = Platform.OS === "android" ? imageFieldD : imageFieldD.replace("file://", "")
+    const uriImageFieldE = Platform.OS === "android" ? imageFieldE : imageFieldE.replace("file://", "")
+    const uriImageFieldF = Platform.OS === "android" ? imageFieldF : imageFieldF.replace("file://", "")
+
+    //TODO
+    // Api.updateEstablishmentData()    
   };
 
   const ImageArea = styled.View`
@@ -50,14 +65,14 @@ export default () => {
         />
 
         <ImageArea>
-          <ImagePickerComponent />
-          <ImagePickerComponent />
-          <ImagePickerComponent />
+          <ImagePickerComponent imageField={imageFieldA} setimageField={setImageFieldA} />
+          <ImagePickerComponent imageField={imageFieldB} setimageField={setImageFieldB} />
+          <ImagePickerComponent imageField={imageFieldC} setimageField={setImageFieldC} />
         </ImageArea>
         <ImageArea>
-          <ImagePickerComponent />
-          <ImagePickerComponent />
-          <ImagePickerComponent />
+          <ImagePickerComponent imageField={imageFieldD} setimageField={setImageFieldD} />
+          <ImagePickerComponent imageField={imageFieldE} setimageField={setImageFieldE} />
+          <ImagePickerComponent imageField={imageFieldF} setimageField={setImageFieldF} />
         </ImageArea>
 
         <CustomButton onPress={handleUpdateClick}>

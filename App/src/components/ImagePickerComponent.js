@@ -4,9 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import styled from "styled-components/native";
 import { VIOLET_PALLETE } from "../screens/ColorsPalette";
 
-export default () => {
-  const [image, setImage] = useState(null);
-
+export default ({imageField, setimageField}) => {
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -22,16 +20,15 @@ export default () => {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
+      allowsMultipleSelection: false,
       aspect: [4, 3],
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.cancelled) {
-      setImage(result.uri);
+      setimageField(result.uri);
     }
   };
 
@@ -51,10 +48,10 @@ export default () => {
 
   return (
     <ImageItem onPress={pickImage}>
-      {image ? (
-        <Image source={{ uri: image }} style={{ width: 80, height: 80 }} />
+      {imageField ? (
+        <Image source={{ uri: imageField }} style={{ width: 80, height: 80 }} />
       ) : (
-        <PickImageText>Imgem</PickImageText>
+        <PickImageText>Imagem</PickImageText>
       )}
     </ImageItem>
   );

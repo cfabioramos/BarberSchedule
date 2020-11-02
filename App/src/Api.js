@@ -1,10 +1,9 @@
 import AsyncStorage from "@react-native-community/async-storage";
-import { JsonBarbers, JsonBarberId, Appointments, Users } from './Json'
+import { JsonBarbers, JsonBarberId, Appointments, Users } from "./Json";
 
 const BASE_API = "http://localhost:3000";
 
 export default {
-
   findUser: async (userName, password) => {
     /* const token = await AsyncStorage.getItem("cfbarber_token");
     const req = await fetch(`${BASE_API}/appointments?token=${token}`, {
@@ -15,13 +14,15 @@ export default {
       }
     const json = await req.json()
     return json */
-    const users = Users.data
+    const users = Users.data;
 
-    const user = users.filter(e => e.userName == userName && e.password == password)
+    const user = users.filter(
+      (e) => e.userName == userName && e.password == password
+    );
 
-    if (user.length) return user[0]
+    if (user.length) return user[0];
 
-    return null
+    return null;
   },
 
   checkToken: async (token) => {
@@ -39,14 +40,13 @@ export default {
       return json;
     */
 
-    const users = Users.data
+    const users = Users.data;
 
-    const user = users.filter(e => e.token == 'establishment_' + token)
+    const user = users.filter((e) => e.token == "establishment_" + token);
 
-    if (user.length) return user[0]
+    if (user.length) return user[0];
 
-    return null
-
+    return null;
   },
 
   signIn: async (email, password) => {
@@ -107,7 +107,7 @@ export default {
     // console.log(json);
     return JsonBarberId;
   },
-  
+
   setFavoriteBarber: async (barberId) => {
     /*const token = await AsyncStorage.getItem("cfbarber_token");
     const req = await fetch(`${BASE_API}/barbers/${id}/favorite?token=${token}`, {
@@ -118,11 +118,17 @@ export default {
       }
     });
     return req;*/
-    return {error: ''}
+    return { error: "" };
   },
 
-  createAppointment: async (barberId, service, selectedYear, 
-    selectedMonth, selectedDay, selectedHour) => {
+  createAppointment: async (
+    barberId,
+    service,
+    selectedYear,
+    selectedMonth,
+    selectedDay,
+    selectedHour
+  ) => {
     /*const token = await AsyncStorage.getItem("cfbarber_token");
     const req = await fetch(`${BASE_API}/barbers/${barberId}/appointments`, {
       method: "POST",
@@ -140,7 +146,7 @@ export default {
         });
     const json = await req.json()
     return json*/
-    return {error: ''}
+    return { error: "" };
   },
 
   findAppointments: async () => {
@@ -153,7 +159,23 @@ export default {
       }
     const json = await req.json()
     return json */
-    return Appointments
-  }
+    return Appointments;
+  },
 
+  updateEstablishmentData: (formData) => {
+    fetch("http://localhost:3000/api/upload", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log("upload succes", response);
+        alert("Upload success!");
+        this.setState({ photo: null });
+      })
+      .catch((error) => {
+        console.log("upload error", error);
+        alert("Upload failed!");
+      });
+  },
 };
