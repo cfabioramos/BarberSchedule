@@ -7,7 +7,7 @@ export default ({ options, placeholder, onChangeValue }) => {
     <DropDownPicker
       items={options}
       placeholder={placeholder}
-      containerStyle={{ height: 60, marginBottom: 15 }}
+      containerStyle={{ height: 40, marginBottom: 15 }}
       style={{
         backgroundColor: VIOLET_PALLETE[3],
         borderTopLeftRadius: 30,

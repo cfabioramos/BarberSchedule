@@ -4,7 +4,7 @@ import { VIOLET_PALLETE } from "../screens/ColorsPalette";
 
 const InputArea = styled.View`
     width: 100%;
-    height: 60px;
+    height: 40px;
     background-color: ${VIOLET_PALLETE[3]};
     flex-direction: row;
     border-radius: 30px;
