@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { JsonBarbers, JsonBarberId, Appointments, Users } from "./Json";
 
-const BASE_API = "http://localhost:3000";
+const BASE_API = "http://localhost:8080";
 
 export default {
   findUser: async (userName, password) => {
@@ -42,7 +42,7 @@ export default {
 
     const users = Users.data;
 
-    const user = users.filter((e) => e.token == "establishment_" + token);
+    const user = users.filter((e) => e.token == "admin_" + token);
 
     if (user.length) return user[0];
 

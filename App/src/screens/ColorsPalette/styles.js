@@ -9,7 +9,7 @@ export const Container = styled.SafeAreaView`
 export const ColorsSet = styled.ScrollView`
   flex-direction: column;
   flex: 1;
-  padding: 20px;
+  padding: 30px;
 `;
 
 export const ColorsList = styled.View`
