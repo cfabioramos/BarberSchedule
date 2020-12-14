@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { VIOLET_PALLETE } from "../ColorsPalette";
+import { validateEmail } from '../../util/Validator'
 
 import { UserContext } from "../../contexts/UserContext";
 import {
@@ -28,7 +29,7 @@ import Icon from "react-native-vector-icons/Feather";
 const dropDownOptions = [
   {
     label: "Cliente",
-    value: "C",
+    value: "U",
     icon: () => <Icon name="user" size={22} color={VIOLET_PALLETE[0]} />,
   },
   {
@@ -54,12 +55,14 @@ export default () => {
       if (typeField == "") {
         alert("Informe se é cliente ou estabelecimento");  
       } else {
-        // let res = await Api.signUp(nameField, emailField, passwordField);
-        let json = await Api.checkToken(
-          "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmI3d2ViLmNvbS5iclwvZGV2YmFyYmVyXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjAxNzc4MzM0LCJleHAiOjE2MDE3ODE5MzQsIm5iZiI6MTYwMTc3ODMzNCwianRpIjoiRGFGZG1QcDJVYnpxWWxoVCIsInN1YiI6NCwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.CqXZ6Z22PC87mTABD1htMgGLfc8MKdAqIZ4eQ3TdWo8"
-        );
-        if (res.token) {
-          await AsyncStorage.setItem("token", res.token);
+        const email = emailField.trim()
+        if (!validateEmail(email)) {
+          alert("Verifique o formato do E-mail")
+          return  
+        }
+        let json = await Api.signUp(nameField, email, passwordField, typeField);
+        if (json.token) {
+          await AsyncStorage.setItem("token", json.token);
           userDispatch({
             type: "setUserContext",
             payload: {
@@ -67,12 +70,9 @@ export default () => {
               type: json.type,
             },
           });
-
           navigation.reset({
             routes: [{ name: "MainTab" }],
           });
-        } else {
-          alert("Erro: " + res.error);
         }
       }
     } else {

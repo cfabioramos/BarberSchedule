@@ -1,7 +1,19 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { JsonBarbers, JsonBarberId, Appointments, Users } from "./Json";
 
-const BASE_API = "http://localhost:8080";
+const BASE_API =
+  "http://ec2-52-14-159-78.us-east-2.compute.amazonaws.com:8080/";
+
+const getRequestBody = (method, object) => {
+  return {
+    method: method,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(object),
+  };
+};
 
 export default {
   findUser: async (userName, password) => {
@@ -42,7 +54,7 @@ export default {
 
     const users = Users.data;
 
-    const user = users.filter((e) => e.token == "admin_" + token);
+    const user = users.filter((e) => e.token == "user_" + token);
 
     if (user.length) return user[0];
 
@@ -50,17 +62,16 @@ export default {
   },
 
   signIn: async (email, password) => {
-    const req = await fetch(`${BASE_API}/auth/login`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    const json = await req.json();
-    console.log(json);
-    return json;
+    const url = `${BASE_API}auth/login`;
+    const body = getRequestBody('POST', {email, password})
+    let response = await fetch(url, body);
+    if (response.ok) {
+      let json = await response.json();
+      return json;
+    } else {
+      console.log("HTTP-Error: " + response.status);
+      alert(await response.text())
+    }
   },
 
   logout: async () => {
@@ -78,18 +89,22 @@ export default {
     return json;
   },
 
-  signUp: async (name, email, password) => {
-    const req = await fetch(`${BASE_API}/user`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name, email, password }),
-    });
-    const json = await req.json();
-    console.log(json);
-    return json;
+  signUp: async (name, email, password, type) => {
+    const url = `${BASE_API}users`
+    const body = getRequestBody('POST', {name, email, password, type})
+    console.log("Opaaa 1")
+    const response = await fetch(url, body);
+    console.log("Opaaa")
+    console.log(response)
+    if (response.ok) {
+      console.log('BATEU AQUI...')
+      let json = await response.json();
+      console.log(json)
+      return json;
+    } else {
+      console.log("HTTP-Error: " + response.status);
+      alert(await response.text())
+    }
   },
 
   getBarbers: async (lat = null, lng = null, address = null) => {
