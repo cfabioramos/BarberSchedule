@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { RefreshControl } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import * as Location from 'expo-location';
+import * as Location from "expo-location";
 
 import Api from "../../Api";
 
@@ -32,7 +32,7 @@ export default () => {
   const [list, setList] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
-  const handleLocationFinder = async () => {
+  const handleGeoLocationControl = async () => {
     setCoords(null);
     setLoading(true);
     setLocationText("");
@@ -44,15 +44,22 @@ export default () => {
         setErrorMsg("Permission to access location was denied");
       }
 
-      let location = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.Highest});
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Highest,
+      });
 
       setCoords(location.coords);
-      getBarbers();
+
+      let geoLocationData = await Api.findGeoLocation(
+        location.coords.latitude,
+        location.coords.longitude
+      );
+      console.log(geoLocationData);
+      setLocationText(geoLocationData.address.city);
     })();
   };
 
   const getBarbers = async () => {
-    setLoading(true);
     setList([]);
 
     let lat = null;
@@ -63,24 +70,28 @@ export default () => {
       lng = coords.longitude;
     }
 
-    let res = await Api.getBarbers(lat, lng, locationText);
-    if (res.error == "") {
-      if (res.loc) {
-        setLocationText(res.loc);
+    if (locationText) {
+      let res = await Api.getBarbers(lat, lng, locationText);
+      if (res.error == "") {
+        setList(res.data);
+      } else {
+        alert("Erro: " + res.error);
       }
-      setList(res.data);
-    } else {
-      alert("Erro: " + res.error);
     }
     setLoading(false);
   };
 
   useEffect(() => {
-    getBarbers();
+    handleGeoLocationControl();
   }, []);
+
+  useEffect(() => {
+    getBarbers();
+  }, [locationText]);
 
   const onRefresh = () => {
     setRefreshing(false);
+    getCoords();
     getBarbers();
   };
 
@@ -113,7 +124,7 @@ export default () => {
             onChangeText={(t) => setLocationText(t)}
             onEndEditing={handleLocationSearch}
           />
-          <LocationFinder onPress={handleLocationFinder}>
+          <LocationFinder onPress={handleGeoLocationControl}>
             <MyLocationIcon width="24" height="24" fill="#FFFFFF" />
           </LocationFinder>
         </LocationArea>

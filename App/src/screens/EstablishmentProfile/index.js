@@ -1,23 +1,34 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import styled from "styled-components/native";
 
 import Api from "../../Api";
 
 import InputComponent from "../../components/InputComponent";
+import FlexibleInputComponent from "../../components/FlexibleInputComponent";
 import ImagePickerComponent from "../../components/ImagePickerComponent";
 
-import { Container, InputArea, CustomButton, CustomButtonText, ImageArea } from "./styles";
+import {
+  Container,
+  InputArea,
+  CustomButton,
+  CustomButtonText,
+  ImageArea,
+} from "./styles";
 
 import PersonIcon from "../../assets/person.svg";
-import LockIcon from "../../assets/lock.svg";
+import LocationIcon from "../../assets/location-home.svg";
 
 export default () => {
   const navigation = useNavigation();
 
   const [nameField, setNameField] = useState("");
-  const [actualPasswordField, setActualPasswordField] = useState("");
-  const [newPasswordField, setNewPasswordField] = useState("");
+
+  const [cepField, setCepField] = useState("");
+  const [addressField, setAddressField] = useState("");
+  const [addressNumberField, setAddressNumberField] = useState("");
+  const [streetField, setStreetField] = useState("");
+  const [cityField, setCityField] = useState("");
+
   const [imageFieldA, setImageFieldA] = useState(null);
   const [imageFieldB, setImageFieldB] = useState(null);
   const [imageFieldC, setImageFieldC] = useState(null);
@@ -28,6 +39,11 @@ export default () => {
   const handleUpdateClick = () => {
     if (
       nameField &&
+      cepField &&
+      addressField &&
+      addressNumberField &&
+      streetField &&
+      cityField &&
       (imageFieldA ||
         imageFieldB ||
         imageFieldC ||
@@ -35,14 +51,12 @@ export default () => {
         imageFieldE ||
         imageFieldF)
     ) {
-      if (!actualPasswordField && newPasswordField) {
-        alert("Para alterar a senha é necessário informar a senha atual");
-      } else {
-        updateEstablishmentData();
-      }
-    } else if (!nameField) {
+      updateEstablishmentData();
+    } 
+    else if (!nameField) {
       alert("O nome deve ser informado");
-    } else {
+    } 
+    else {
       alert("Adicione ao menos uma imagem de capa");
     }
   };
@@ -55,11 +69,15 @@ export default () => {
     });
   };
 
+  const handleCep = async () => {
+    const addressObj = await Api.findAddressByCep(cepField)
+    setAddressField(addressObj.logradouro)
+  }
+
   const updateEstablishmentData = () => {
     const data = {};
     data.name = nameField;
-    data.actualPassword = actualPasswordField;
-    data.newPassword = newPasswordField;
+    data.cep = cepField;
     data.images = [];
 
     if (imageFieldA) {
@@ -127,20 +145,33 @@ export default () => {
         />
 
         <InputComponent
-          IconSvg={LockIcon}
-          placeholder="Senha Atual"
-          value={actualPasswordField}
-          onChangeText={(t) => setActualPasswordField(t)}
-          password={true}
+          IconSvg={LocationIcon}
+          placeholder="CEP"
+          value={cepField}
+          onChangeText={(t) => setCepField(t)}
+          onBlur={handleCep}
         />
 
         <InputComponent
-          IconSvg={LockIcon}
-          placeholder="Nova Senha"
-          value={newPasswordField}
-          onChangeText={(t) => setNewPasswordField(t)}
-          password={true}
+          IconSvg={LocationIcon}
+          placeholder="Endereço"
+          value={addressField}
+          readOnly={true}
         />
+
+        <FlexibleInputComponent
+          width={35}
+          IconSvg={LocationIcon}
+          placeholder="No"
+          value={addressNumberField}
+          onChangeText={(t) => setAddressNumberField(t)}
+        /><FlexibleInputComponent
+        width={35}
+        IconSvg={LocationIcon}
+        placeholder="No"
+        value={addressNumberField}
+        onChangeText={(t) => setAddressNumberField(t)}
+      />
 
         <ImageArea>
           <ImagePickerComponent

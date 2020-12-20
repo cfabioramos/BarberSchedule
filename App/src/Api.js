@@ -92,19 +92,29 @@ export default {
   signUp: async (name, email, password, type) => {
     const url = `${BASE_API}users`
     const body = getRequestBody('POST', {name, email, password, type})
-    console.log("Opaaa 1")
     const response = await fetch(url, body);
-    console.log("Opaaa")
-    console.log(response)
     if (response.ok) {
-      console.log('BATEU AQUI...')
       let json = await response.json();
-      console.log(json)
       return json;
     } else {
       console.log("HTTP-Error: " + response.status);
       alert(await response.text())
     }
+  },
+
+  findGeoLocation: async ( lat, lng ) => {
+    // const token = await AsyncStorage.getItem("cfbarber_token");
+    const uri = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    const req = await fetch(uri);
+    const json = await req.json();
+    return json;
+  },
+
+  findAddressByCep: async ( cep ) => {    
+    const uri = `https://viacep.com.br/ws/${cep}/json`
+    const req = await fetch(uri);
+    const json = await req.json();
+    return json;
   },
 
   getBarbers: async (lat = null, lng = null, address = null) => {

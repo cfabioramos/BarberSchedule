@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { VIOLET_PALLETE } from "../screens/ColorsPalette";
 
 const InputArea = styled.View`
-    width: 100%;
+    width: ${props => props.width}%;
     height: 40px;
     background-color: ${VIOLET_PALLETE[3]};
     flex-direction: row;
@@ -19,9 +19,9 @@ const Input = styled.TextInput`
     margin-left: 10px;
 `;
 
-export default ({IconSvg, placeholder, value, onChangeText, onBlur, password, readOnly}) => {
+export default ({IconSvg, width, placeholder, value, onChangeText, onBlur, readOnly}) => {
     return (
-        <InputArea>
+        <InputArea width={width}>
             <IconSvg width="24" height="24" fill={VIOLET_PALLETE[0]} />
             <Input
                 placeholder={placeholder}
@@ -29,8 +29,7 @@ export default ({IconSvg, placeholder, value, onChangeText, onBlur, password, re
                 value={value}
                 onChangeText={onChangeText}
                 onBlur={onBlur}
-                secureTextEntry={password}
-                editable={readOnly}
+                editable={readOnly}                
             />
         </InputArea>
     );
