@@ -2,7 +2,8 @@ import React, { useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { VIOLET_PALLETE } from "../ColorsPalette";
-import { validateEmail } from '../../util/Validator'
+import { validateEmail } from "../../util/Validator";
+import ImagePickerComponent from "../../components/ImagePickerComponent";
 
 import { UserContext } from "../../contexts/UserContext";
 import {
@@ -13,12 +14,14 @@ import {
   SignMessageButton,
   SignMessageButtonText,
   SignMessageButtonTextBold,
+  ImageArea
 } from "./styles";
 
 import InputComponent from "../../components/InputComponent";
 import SignDropdown from "../../components/SignDropdown";
 
 import Api from "../../Api";
+import Commons from '../../util/Commons'
 
 import BarberLogo from "../../assets/barber_2.svg";
 import PersonIcon from "../../assets/person.svg";
@@ -45,22 +48,35 @@ export default () => {
   const { dispatch: userDispatch } = useContext(UserContext);
   const navigation = useNavigation();
 
+  const [imageField, setImageField] = useState(null);
   const [nameField, setNameField] = useState("");
   const [emailField, setEmailField] = useState("");
   const [passwordField, setPasswordField] = useState("");
   const [typeField, setTypeField] = useState("");
-
+  
   const handleSignClick = async () => {
     if (nameField != "" && emailField != "" && passwordField != "") {
       if (typeField == "") {
-        alert("Informe se é cliente ou estabelecimento");  
+        alert("Informe se é cliente ou estabelecimento");
       } else {
-        const email = emailField.trim()
+        const email = emailField.trim();
         if (!validateEmail(email)) {
-          alert("Verifique o formato do E-mail")
-          return  
+          alert("Verifique o formato do E-mail");
+          return;
         }
-        let json = await Api.signUp(nameField, email, passwordField, typeField);
+        
+        let objectImageData = Commons.getImageDataFromLocal(imageField)
+        let filename = objectImageData.filename
+        let type = objectImageData.type
+        
+        const formData = new FormData();
+        formData.append('image', { uri: imageField, name: filename, type })
+        formData.append('name', nameField)
+        formData.append('email', email)
+        formData.append('password', passwordField)
+        formData.append('type', typeField)
+        
+        let json = await Api.signUp(formData);
         if (json.token) {
           await AsyncStorage.setItem("token", json.token);
           userDispatch({
@@ -77,7 +93,7 @@ export default () => {
       }
     } else {
       alert("Preencha os campos");
-    }
+    } 
   };
 
   const handleMessageButtonClick = () => {
@@ -89,6 +105,14 @@ export default () => {
   return (
     <Container>
       <BarberLogo width="100%" height="140" />
+
+      <ImageArea>
+        <ImagePickerComponent
+          fieldPlaceholder="Foto"
+          imageField={imageField}
+          setimageField={setImageField}
+        />
+      </ImageArea>
 
       <InputArea>
         <InputComponent

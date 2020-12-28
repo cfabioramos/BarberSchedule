@@ -175,28 +175,34 @@ export default () => {
 
         <ImageArea>
           <ImagePickerComponent
+            fieldPlaceholder="Imagem"
             imageField={imageFieldA}
             setimageField={setImageFieldA}
           />
           <ImagePickerComponent
+            fieldPlaceholder="Imagem"
             imageField={imageFieldB}
             setimageField={setImageFieldB}
           />
           <ImagePickerComponent
+            fieldPlaceholder="Imagem"
             imageField={imageFieldC}
             setimageField={setImageFieldC}
           />
         </ImageArea>
         <ImageArea>
           <ImagePickerComponent
+            fieldPlaceholder="Imagem"
             imageField={imageFieldD}
             setimageField={setImageFieldD}
           />
           <ImagePickerComponent
+            fieldPlaceholder="Imagem"
             imageField={imageFieldE}
             setimageField={setImageFieldE}
           />
           <ImagePickerComponent
+            fieldPlaceholder="Imagem"
             imageField={imageFieldF}
             setimageField={setImageFieldF}
           />

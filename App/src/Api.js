@@ -63,14 +63,14 @@ export default {
 
   signIn: async (email, password) => {
     const url = `${BASE_API}auth/login`;
-    const body = getRequestBody('POST', {email, password})
+    const body = getRequestBody("POST", { email, password });
     let response = await fetch(url, body);
     if (response.ok) {
       let json = await response.json();
       return json;
     } else {
       console.log("HTTP-Error: " + response.status);
-      alert(await response.text())
+      alert(await response.text());
     }
   },
 
@@ -89,29 +89,34 @@ export default {
     return json;
   },
 
-  signUp: async (name, email, password, type) => {
-    const url = `${BASE_API}users`
-    const body = getRequestBody('POST', {name, email, password, type})
-    const response = await fetch(url, body);
+  signUp: async ( formData ) => {
+    const url = `${BASE_API}users`;
+    const response = await fetch(url, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    });
     if (response.ok) {
       let json = await response.json();
       return json;
     } else {
       console.log("HTTP-Error: " + response.status);
-      alert(await response.text())
+      alert(await response.text());
     }
   },
 
-  findGeoLocation: async ( lat, lng ) => {
+  findGeoLocation: async (lat, lng) => {
     // const token = await AsyncStorage.getItem("cfbarber_token");
-    const uri = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+    const uri = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
     const req = await fetch(uri);
     const json = await req.json();
     return json;
   },
 
-  findAddressByCep: async ( cep ) => {    
-    const uri = `https://viacep.com.br/ws/${cep}/json`
+  findAddressByCep: async (cep) => {
+    const uri = `https://viacep.com.br/ws/${cep}/json`;
     const req = await fetch(uri);
     const json = await req.json();
     return json;
@@ -203,5 +208,6 @@ export default {
         console.log("Erro ", error);
         alert("Erro na atualização");
       });
-  },
+  }
+
 };

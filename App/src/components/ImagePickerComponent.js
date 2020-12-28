@@ -4,7 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import styled from "styled-components/native";
 import { VIOLET_PALLETE } from "../screens/ColorsPalette";
 
-export default ({imageField, setimageField}) => {
+export default ({fieldPlaceholder, imageField, setimageField}) => {
   useEffect(() => {
     (async () => {
       if (Platform.OS !== "web") {
@@ -51,7 +51,7 @@ export default ({imageField, setimageField}) => {
       {imageField ? (
         <Image source={{ uri: imageField }} style={{ width: 80, height: 80, borderRadius: 20 }} />
       ) : (
-        <PickImageText>Imagem</PickImageText>
+        <PickImageText>{fieldPlaceholder}</PickImageText>
       )}
     </ImageItem>
   );

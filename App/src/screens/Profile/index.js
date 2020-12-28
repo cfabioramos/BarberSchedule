@@ -62,6 +62,7 @@ export default () => {
       <InputArea>
         <ImageArea>
           <ImagePickerComponent
+            fieldPlaceholder="Imagem"
             imageField={imageField}
             setimageField={setImageField}
           />

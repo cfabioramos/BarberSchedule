@@ -1,8 +1,9 @@
 import React, { useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
+import { validateEmail } from "../../util/Validator";
 
-import { UserContext } from '../../contexts/UserContext'
+import { UserContext } from "../../contexts/UserContext";
 
 import {
   Container,
@@ -14,7 +15,7 @@ import {
   SignMessageButtonTextBold,
 } from "./styles";
 
-import Api from '../../Api';
+import Api from "../../Api";
 
 import InputComponent from "../../components/InputComponent";
 
@@ -31,7 +32,12 @@ export default () => {
 
   const handleSignClick = async () => {
     if (emailField != "" && passwordField != "") {
-      let json = await Api.signIn(emailField, passwordField);
+      const email = emailField.trim();
+      if (!validateEmail(email)) {
+        alert("Verifique o formato do E-mail");
+        return;
+      }
+      let json = await Api.signIn(email, passwordField);
       // let json = await Api.checkToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmI3d2ViLmNvbS5iclwvZGV2YmFyYmVyXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjAxNzc4MzM0LCJleHAiOjE2MDE3ODE5MzQsIm5iZiI6MTYwMTc3ODMzNCwianRpIjoiRGFGZG1QcDJVYnpxWWxoVCIsInN1YiI6NCwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.CqXZ6Z22PC87mTABD1htMgGLfc8MKdAqIZ4eQ3TdWo8')
       if (json && json.token) {
         await AsyncStorage.setItem("cfbarber_token", json.token);
@@ -40,7 +46,7 @@ export default () => {
           type: "setUserContext",
           payload: {
             avatar: json.avatar,
-            type: json.type
+            type: json.type,
           },
         });
 
@@ -68,14 +74,14 @@ export default () => {
           IconSvg={EmailIcon}
           placeholder="Digite seu e-mail"
           value={emailField}
-          onChangeText={t => setEmailField(t)}
+          onChangeText={(t) => setEmailField(t)}
         />
 
         <InputComponent
           IconSvg={LockIcon}
           placeholder="Digite sua senha"
           value={passwordField}
-          onChangeText={t => setPasswordField(t)}
+          onChangeText={(t) => setPasswordField(t)}
           password={true}
         />
 

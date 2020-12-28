@@ -6,7 +6,7 @@ export const JsonBarbers = {
     {
       id: 4,
       name: "Bonieky Lacerda",
-      avatar: "https://api.b7web.com.br/devbarber/media/avatars/3.png",
+      avatar: "https://barberschedulerbucket.s3.us-east-2.amazonaws.com/imagens/default_avatar.png",
       stars: 2.3,
     },
     {

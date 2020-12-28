@@ -8,6 +8,15 @@ export const Container = styled.SafeAreaView`
     align-items: center;
 `;
 
+export const ImageArea = styled.View`
+  margin-top: 30px;
+  margin-bottom: -10px;
+  justify-content: space-around;
+  width: 100%;
+  border-radius: 30px;
+  flex-direction: row;
+`;
+
 export const InputArea = styled.View`
     width: 100%;
     padding: 40px;
