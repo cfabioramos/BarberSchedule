@@ -38,20 +38,26 @@ export default {
   },
 
   checkToken: async (token) => {
-    /*
-      const req = await fetch(`${BASE_API}/auth/refresh`, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token }),
-      });
-      const json = await req.json();
-      console.log(json);
+    const response = await fetch(`${BASE_API}/auth/refresh`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ token }),
+    });
+    
+    if (response && response.ok) {
+      let json = await response.json();
+      console.log(json)
       return json;
-    */
+    } else {
+      console.log("HTTP-Error: " + response.status);
+      alert(await response.text());
+      return null
+    }
 
+    /*
     const users = Users.data;
 
     const user = users.filter((e) => e.token == "user_" + token);
@@ -59,18 +65,20 @@ export default {
     if (user.length) return user[0];
 
     return null;
+    */
   },
 
   signIn: async (email, password) => {
     const url = `${BASE_API}auth/login`;
     const body = getRequestBody("POST", { email, password });
     let response = await fetch(url, body);
-    if (response.ok) {
+    if (response && response.ok) {
       let json = await response.json();
       return json;
     } else {
       console.log("HTTP-Error: " + response.status);
       alert(await response.text());
+      return null
     }
   },
 
@@ -89,7 +97,7 @@ export default {
     return json;
   },
 
-  signUp: async ( formData ) => {
+  signUp: async (formData) => {
     const url = `${BASE_API}users`;
     const response = await fetch(url, {
       method: "POST",
@@ -98,7 +106,7 @@ export default {
         "content-type": "multipart/form-data",
       },
     });
-    if (response.ok) {
+    if (response && response.ok) {
       let json = await response.json();
       return json;
     } else {
@@ -208,6 +216,5 @@ export default {
         console.log("Erro ", error);
         alert("Erro na atualização");
       });
-  }
-
+  },
 };
