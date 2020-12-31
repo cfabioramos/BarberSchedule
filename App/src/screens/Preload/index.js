@@ -32,14 +32,14 @@ export default () => {
           });
           navigation.navigate("MainTab");
         } else {
-          navigation.navigate("SignUp");
+          navigation.navigate("SignIn");
         }
       } else {
-        navigation.navigate("SignIn");
+        navigation.navigate("SignUp");
       }
     };
     checkToken();
-  });
+  }, []);
 
   return (
     <Container>

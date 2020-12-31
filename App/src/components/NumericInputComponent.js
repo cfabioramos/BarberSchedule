@@ -13,25 +13,29 @@ const InputArea = styled.View`
     margin-bottom: 15px;
 `;
 
-const Input = styled.TextInput`
+const NumericInput = styled.TextInput`
     flex: 1;
     font-size: 16px;
     color: ${VIOLET_PALLETE[0]};
     margin-left: 10px;
 `;
 
-export default ({IconSvg, placeholder, value, onChangeText, onBlur, password, readOnly}) => {
+export default ({IconSvg, placeholder, value, onChangeText, onBlur, password, readOnly, maxLength}) => {
     return (
         <InputArea>
             <IconSvg width="24" height="24" fill={VIOLET_PALLETE[0]} />
-            <Input
+            <NumericInput
+                keyboardType = 'numeric'
                 placeholder={placeholder}
                 placeholderTextColor={VIOLET_PALLETE[0]}
                 value={value}
-                onChangeText={onChangeText}
+                onChangeText={value => {
+                    onChangeText(value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, ''))
+                }}
                 onBlur={onBlur}
                 secureTextEntry={password}
                 editable={readOnly}
+                maxLength={maxLength}
             />
         </InputArea>
     );

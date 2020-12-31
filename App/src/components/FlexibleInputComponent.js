@@ -19,7 +19,7 @@ const Input = styled.TextInput`
     margin-left: 10px;
 `;
 
-export default ({IconSvg, width, placeholder, value, onChangeText, onBlur, readOnly}) => {
+export default ({IconSvg, width, placeholder, value, onChangeText, onBlur, readOnly, maxLength}) => {
     return (
         <InputArea width={width}>
             <IconSvg width="24" height="24" fill={VIOLET_PALLETE[0]} />
@@ -29,7 +29,8 @@ export default ({IconSvg, width, placeholder, value, onChangeText, onBlur, readO
                 value={value}
                 onChangeText={onChangeText}
                 onBlur={onBlur}
-                editable={readOnly}                
+                editable={readOnly}
+                maxLength={maxLength}            
             />
         </InputArea>
     );

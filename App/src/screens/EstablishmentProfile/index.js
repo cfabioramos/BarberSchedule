@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-community/async-storage";
 
 import Api from "../../Api";
 
+import NumericInputComponent from "../../components/NumericInputComponent";
 import InputComponent from "../../components/InputComponent";
 import FlexibleInputComponent from "../../components/FlexibleInputComponent";
 import ImagePickerComponent from "../../components/ImagePickerComponent";
@@ -18,16 +20,18 @@ import {
 import PersonIcon from "../../assets/person.svg";
 import LocationIcon from "../../assets/location-home.svg";
 
+import { UserContext } from "../../contexts/UserContext";
+
 export default () => {
+  const { dispatch: userDispatch } = useContext(UserContext);
+
   const navigation = useNavigation();
 
   const [nameField, setNameField] = useState("");
 
-  const [cepField, setCepField] = useState("");
+  const [cepField, setCepField] = useState();
   const [addressField, setAddressField] = useState("");
   const [addressNumberField, setAddressNumberField] = useState("");
-  const [streetField, setStreetField] = useState("");
-  const [cityField, setCityField] = useState("");
 
   const [imageFieldA, setImageFieldA] = useState(null);
   const [imageFieldB, setImageFieldB] = useState(null);
@@ -36,27 +40,60 @@ export default () => {
   const [imageFieldE, setImageFieldE] = useState(null);
   const [imageFieldF, setImageFieldF] = useState(null);
 
+  useEffect(() => {
+    const getUserProfileData = async () => {
+      const token = await AsyncStorage.getItem("cfbarber_token");
+      console.log("TOKEN: ");
+      console.log(token);
+      if (token) {
+        let res = await Api.checkToken(token);
+        if (res) {
+          userDispatch({
+            type: "setUserContext",
+            payload: {
+              avatar: res.avatar,
+              type: res.type,
+            },
+          });
+          setNameField(res.name);
+          if (res.userAddress && res.userAddress.cep) {
+            setCepField(res.userAddress.cep.toString());
+            setAddressField(res.userAddress.address);
+            setAddressNumberField(res.userAddress.number);
+          }
+        } else {
+          navigation.navigate("SignIn");
+        }
+      } else {
+        navigation.navigate("SignUp");
+      }
+    };
+    getUserProfileData();
+  }, []);
+
   const handleUpdateClick = () => {
     if (
       nameField &&
       cepField &&
       addressField &&
-      addressNumberField &&
-      streetField &&
-      cityField &&
+      addressNumberField /* &&
       (imageFieldA ||
         imageFieldB ||
         imageFieldC ||
         imageFieldD ||
         imageFieldE ||
-        imageFieldF)
+        imageFieldF) */
     ) {
       updateEstablishmentData();
-    } 
-    else if (!nameField) {
+    } else if (!nameField) {
       alert("O nome deve ser informado");
-    } 
-    else {
+    } else if (!cepField) {
+      alert(
+        "Informe o CEP para poder ser localizado pelos usuários do aplicativo."
+      );
+    } else if (!addressNumberField) {
+      alert("Informe o número do endereço.");
+    } else {
       alert("Adicione ao menos uma imagem de capa");
     }
   };
@@ -70,68 +107,19 @@ export default () => {
   };
 
   const handleCep = async () => {
-    const addressObj = await Api.findAddressByCep(cepField)
-    setAddressField(addressObj.logradouro)
-  }
+    const addressObj = await Api.findAddressByCep(cepField);
+    setAddressField(addressObj.logradouro);
+  };
 
-  const updateEstablishmentData = () => {
-    const data = {};
-    data.name = nameField;
-    data.cep = cepField;
-    data.images = [];
-
-    if (imageFieldA) {
-      data.images.push(
-        Platform.OS === "android"
-          ? imageFieldA
-          : imageFieldA.replace("file://", "")
-      );
-    }
-
-    if (imageFieldB) {
-      data.images.push(
-        Platform.OS === "android"
-          ? imageFieldB
-          : imageFieldB.replace("file://", "")
-      );
-    }
-
-    if (imageFieldC) {
-      data.images.push(
-        Platform.OS === "android"
-          ? imageFieldC
-          : imageFieldC.replace("file://", "")
-      );
-    }
-
-    if (imageFieldD) {
-      data.images.push(
-        Platform.OS === "android"
-          ? imageFieldD
-          : imageFieldD.replace("file://", "")
-      );
-    }
-
-    if (imageFieldE) {
-      data.images.push(
-        Platform.OS === "android"
-          ? imageFieldE
-          : imageFieldE.replace("file://", "")
-      );
-    }
-
-    if (imageFieldF) {
-      data.images.push(
-        Platform.OS === "android"
-          ? imageFieldF
-          : imageFieldF.replace("file://", "")
-      );
-    }
-
-    console.log(data);
-
-    //TODO
-    // Api.updateEstablishmentData()
+  const updateEstablishmentData = async () => {
+    const formData = new FormData();
+    formData.append("name", nameField);
+    formData.append("cep", cepField);
+    formData.append("numero", addressNumberField);
+    
+    const userData = await Api.submitMultipartWithFormData('users', 'PUT', formData)
+    if (userData)
+      alert ('Dados atualizados')
   };
 
   return (
@@ -144,12 +132,13 @@ export default () => {
           onChangeText={(t) => setNameField(t)}
         />
 
-        <InputComponent
+        <NumericInputComponent
           IconSvg={LocationIcon}
           placeholder="CEP"
           value={cepField}
-          onChangeText={(t) => setCepField(t)}
+          onChangeText={setCepField}
           onBlur={handleCep}
+          maxLength={8}
         />
 
         <InputComponent
@@ -165,13 +154,8 @@ export default () => {
           placeholder="No"
           value={addressNumberField}
           onChangeText={(t) => setAddressNumberField(t)}
-        /><FlexibleInputComponent
-        width={35}
-        IconSvg={LocationIcon}
-        placeholder="No"
-        value={addressNumberField}
-        onChangeText={(t) => setAddressNumberField(t)}
-      />
+          maxLength={6}
+        />
 
         <ImageArea>
           <ImagePickerComponent

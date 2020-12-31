@@ -44,28 +44,18 @@ export default {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ token }),
+      body: token,
     });
-    
+
     if (response && response.ok) {
       let json = await response.json();
-      console.log(json)
+      console.log(json);
       return json;
     } else {
       console.log("HTTP-Error: " + response.status);
-      alert(await response.text());
-      return null
+      //alert(await response.text());
+      return null;
     }
-
-    /*
-    const users = Users.data;
-
-    const user = users.filter((e) => e.token == "user_" + token);
-
-    if (user.length) return user[0];
-
-    return null;
-    */
   },
 
   signIn: async (email, password) => {
@@ -78,7 +68,7 @@ export default {
     } else {
       console.log("HTTP-Error: " + response.status);
       alert(await response.text());
-      return null
+      return null;
     }
   },
 
@@ -200,21 +190,22 @@ export default {
     return Appointments;
   },
 
-  updateEstablishmentData: async (formData) => {
+  submitMultipartWithFormData: async (entity, methodName, formData) => {
     const token = await AsyncStorage.getItem("cfbarber_token");
-    fetch(`${BASE_API}/establishment?token=${token}`, {
-      method: "PUT",
+    const response = await fetch(`${BASE_API}${entity}?token=${token}`, {
+      method: methodName,
       body: formData,
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        // console.log("upload succes", response);
-        alert("Dados atualizados com sucesso");
-        this.setState({ photo: null });
-      })
-      .catch((error) => {
-        console.log("Erro ", error);
-        alert("Erro na atualização");
-      });
-  },
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    });
+    if (response && response.ok) {
+      let json = await response.json();
+      return json;
+    } else {
+      console.log("HTTP-Error: " + response.status);
+      alert(await response.text());
+    }
+  }
+
 };
