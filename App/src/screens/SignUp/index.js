@@ -76,7 +76,7 @@ export default () => {
         formData.append('password', passwordField)
         formData.append('type', typeField)
         
-        let json = await Api.signUp(formData);
+        let json = await Api.submitMultipartWithFormData('users', 'POST', formData)
         if (json.token) {
           await AsyncStorage.setItem("token", json.token);
           userDispatch({

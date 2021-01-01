@@ -87,24 +87,6 @@ export default {
     return json;
   },
 
-  signUp: async (formData) => {
-    const url = `${BASE_API}users`;
-    const response = await fetch(url, {
-      method: "POST",
-      body: formData,
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    });
-    if (response && response.ok) {
-      let json = await response.json();
-      return json;
-    } else {
-      console.log("HTTP-Error: " + response.status);
-      alert(await response.text());
-    }
-  },
-
   findGeoLocation: async (lat, lng) => {
     // const token = await AsyncStorage.getItem("cfbarber_token");
     const uri = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
@@ -192,7 +174,11 @@ export default {
 
   submitMultipartWithFormData: async (entity, methodName, formData) => {
     const token = await AsyncStorage.getItem("cfbarber_token");
-    const response = await fetch(`${BASE_API}${entity}?token=${token}`, {
+    formData.append('token', token)
+    const uri = `${BASE_API}${entity}`
+    console.log(uri)
+    console.log(methodName)
+    const response = await fetch(uri, {
       method: methodName,
       body: formData,
       headers: {

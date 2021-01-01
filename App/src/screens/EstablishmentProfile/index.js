@@ -115,7 +115,7 @@ export default () => {
     const formData = new FormData();
     formData.append("name", nameField);
     formData.append("cep", cepField);
-    formData.append("numero", addressNumberField);
+    formData.append("number", addressNumberField);
     
     const userData = await Api.submitMultipartWithFormData('users', 'PUT', formData)
     if (userData)
