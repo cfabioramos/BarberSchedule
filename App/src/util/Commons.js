@@ -1,5 +1,4 @@
 
-
 export default {
 
     getImageDataFromLocal: ( imageUri ) => {
@@ -11,3 +10,5 @@ export default {
     }
 
 };
+
+export const TOKEN_KEY = "cfbarber_token";

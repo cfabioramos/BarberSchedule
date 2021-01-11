@@ -27,13 +27,13 @@ export default () => {
   const navigation = useNavigation();
 
   const [locationText, setLocationText] = useState("");
-  const [coords, setCoords] = useState(null);
+  const [addressSearchObject, setAddressSearchObject] = useState({});
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const handleGeoLocationControl = async () => {
-    setCoords(null);
+    setAddressSearchObject({})
     setLoading(true);
     setLocationText("");
     setList([]);
@@ -42,19 +42,19 @@ export default () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
+        return
       }
 
       let location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Highest,
       });
 
-      setCoords(location.coords);
-
       let geoLocationData = await Api.findGeoLocation(
         location.coords.latitude,
         location.coords.longitude
       );
-      console.log(geoLocationData);
+      setAddressSearchObject({...addressSearchObject, ...{cep: geoLocationData.address.postcode,
+        street: geoLocationData.address.road, city: geoLocationData.address.city}})
       setLocationText(geoLocationData.address.city);
     })();
   };
@@ -62,16 +62,8 @@ export default () => {
   const getBarbers = async () => {
     setList([]);
 
-    let lat = null;
-    let lng = null;
-
-    if (coords) {
-      lat = coords.latitude;
-      lng = coords.longitude;
-    }
-
     if (locationText) {
-      let res = await Api.getBarbers(lat, lng, locationText);
+      let res = await Api.getBarbers(addressSearchObject);
       if (res.error == "") {
         setList(res.data);
       } else {
@@ -91,14 +83,12 @@ export default () => {
 
   const onRefresh = () => {
     setRefreshing(false);
-    getCoords();
     getBarbers();
   };
 
-  const handleLocationSearch = () => {
-    setCoords({});
+  /*const handleLocationSearch = () => {
     getBarbers();
-  };
+  };*/
 
   return (
     <Container>
@@ -117,12 +107,17 @@ export default () => {
         </HeaderArea>
 
         <LocationArea>
+          {
+            /*
+              onEndEditing={handleLocationSearch}
+              tem que ser melhor pensado.
+            */
+          }
           <LocationInput
             placeholder="Onde você está?"
             placeholderTextColor="#FFFFFF"
             value={locationText}
-            onChangeText={(t) => setLocationText(t)}
-            onEndEditing={handleLocationSearch}
+            onChangeText={(t) => setLocationText(t)}            
           />
           <LocationFinder onPress={handleGeoLocationControl}>
             <MyLocationIcon width="24" height="24" fill="#FFFFFF" />

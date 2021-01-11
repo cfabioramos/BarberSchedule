@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { JsonBarbers, JsonBarberId, Appointments, Users } from "./Json";
+import { TOKEN_KEY } from "./util/Commons"
 
 const BASE_API =
   "http://ec2-52-14-159-78.us-east-2.compute.amazonaws.com:8080/";
@@ -38,7 +39,7 @@ export default {
   },
 
   checkToken: async (token) => {
-    const response = await fetch(`${BASE_API}/auth/refresh`, {
+    const response = await fetch(`${BASE_API}auth/refresh`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -49,7 +50,6 @@ export default {
 
     if (response && response.ok) {
       let json = await response.json();
-      console.log(json);
       return json;
     } else {
       console.log("HTTP-Error: " + response.status);
@@ -73,9 +73,9 @@ export default {
   },
 
   logout: async () => {
-    const token = await AsyncStorage.getItem("cfbarber_token");
+    const token = await AsyncStorage.getItem(TOKEN_KEY);
 
-    const req = await fetch(`${BASE_API}/auth/logout`, {
+    const req = await fetch(`${BASE_API}auth/logout`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -88,7 +88,7 @@ export default {
   },
 
   findGeoLocation: async (lat, lng) => {
-    // const token = await AsyncStorage.getItem("cfbarber_token");
+    // const token = await AsyncStorage.getItem(TOKEN_KEY);
     const uri = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
     const req = await fetch(uri);
     const json = await req.json();
@@ -102,24 +102,33 @@ export default {
     return json;
   },
 
-  getBarbers: async (lat = null, lng = null, address = null) => {
-    const token = await AsyncStorage.getItem("cfbarber_token");
-    // const req = await fetch(`${BASE_API}/barbers?token=${token}&lat=${lat}&lng=${lng}&address=${address}`);
-    // const json = await req.json();
-    // console.log(json);
+  getBarbers: async (address) => {
+    const token = await AsyncStorage.getItem(TOKEN_KEY);
+    const uri = `${BASE_API}users?token=${token}&cep=${address.cep}&street=${address.street}&city=${address.city}`
+    console.log(uri)
+    const response = await fetch(uri);
+    if (response && response.ok) {
+      let json = await response.json();
+      console.log(json)
+      // return json;
+    } else {
+      console.log("HTTP-Error: " + response.status);
+      alert(await response.text());
+      // return null;
+    }
     return JsonBarbers;
   },
 
   getBarber: async (id) => {
-    const token = await AsyncStorage.getItem("cfbarber_token");
-    // const req = await fetch(`${BASE_API}/barbers/${id}?token=${token}`);
+    const token = await AsyncStorage.getItem(TOKEN_KEY);
+    // const req = await fetch(`${BASE_API}barbers/${id}?token=${token}`);
     // const json = await req.json();
     // console.log(json);
     return JsonBarberId;
   },
 
   setFavoriteBarber: async (barberId) => {
-    /*const token = await AsyncStorage.getItem("cfbarber_token");
+    /*const token = await AsyncStorage.getItem(TOKEN_KEY);
     const req = await fetch(`${BASE_API}/barbers/${id}/favorite?token=${token}`, {
       method: "PUT",
       headers: {
@@ -139,7 +148,7 @@ export default {
     selectedDay,
     selectedHour
   ) => {
-    /*const token = await AsyncStorage.getItem("cfbarber_token");
+    /*const token = await AsyncStorage.getItem(TOKEN_KEY);
     const req = await fetch(`${BASE_API}/barbers/${barberId}/appointments`, {
       method: "POST",
       headers: {
@@ -160,7 +169,7 @@ export default {
   },
 
   findAppointments: async () => {
-    /* const token = await AsyncStorage.getItem("cfbarber_token");
+    /* const token = await AsyncStorage.getItem(TOKEN_KEY);
     const req = await fetch(`${BASE_API}/appointments?token=${token}`, {
       method: "GET",
       headers: {
@@ -173,11 +182,9 @@ export default {
   },
 
   submitMultipartWithFormData: async (entity, methodName, formData) => {
-    const token = await AsyncStorage.getItem("cfbarber_token");
+    const token = await AsyncStorage.getItem(TOKEN_KEY);
     formData.append('token', token)
     const uri = `${BASE_API}${entity}`
-    console.log(uri)
-    console.log(methodName)
     const response = await fetch(uri, {
       method: methodName,
       body: formData,

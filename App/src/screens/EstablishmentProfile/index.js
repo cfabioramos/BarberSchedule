@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
+import { TOKEN_KEY } from "../../util/Commons"
 
 import Api from "../../Api";
 
@@ -42,9 +43,7 @@ export default () => {
 
   useEffect(() => {
     const getUserProfileData = async () => {
-      const token = await AsyncStorage.getItem("cfbarber_token");
-      console.log("TOKEN: ");
-      console.log(token);
+      const token = await AsyncStorage.getItem(TOKEN_KEY);
       if (token) {
         let res = await Api.checkToken(token);
         if (res) {
@@ -107,8 +106,12 @@ export default () => {
   };
 
   const handleCep = async () => {
-    const addressObj = await Api.findAddressByCep(cepField);
-    setAddressField(addressObj.logradouro);
+    if (cepField) {
+      const addressObj = await Api.findAddressByCep(cepField);
+      setAddressField(addressObj.logradouro ? addressObj.logradouro : addressObj.localidade);
+    } else {
+      setAddressField("");
+    }
   };
 
   const updateEstablishmentData = async () => {
@@ -136,7 +139,7 @@ export default () => {
           IconSvg={LocationIcon}
           placeholder="CEP"
           value={cepField}
-          onChangeText={setCepField}
+          onChangeText={(t) => setCepField(t)}
           onBlur={handleCep}
           maxLength={8}
         />

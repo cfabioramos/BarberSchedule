@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { VIOLET_PALLETE } from "../ColorsPalette";
 import { validateEmail } from "../../util/Validator";
 import ImagePickerComponent from "../../components/ImagePickerComponent";
+import { TOKEN_KEY } from "../../util/Commons"
 
 import { UserContext } from "../../contexts/UserContext";
 import {
@@ -78,7 +79,7 @@ export default () => {
         
         let json = await Api.submitMultipartWithFormData('users', 'POST', formData)
         if (json.token) {
-          await AsyncStorage.setItem("token", json.token);
+          await AsyncStorage.setItem(TOKEN_KEY, json.token);
           userDispatch({
             type: "setUserContext",
             payload: {
