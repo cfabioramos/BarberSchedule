@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import { JsonBarbers, JsonBarberId, Appointments, Users } from "./Json";
-import { TOKEN_KEY } from "./util/Commons"
+import { TOKEN_KEY } from "./util/Commons";
 
 const BASE_API =
   "http://ec2-52-14-159-78.us-east-2.compute.amazonaws.com:8080/";
@@ -104,12 +104,16 @@ export default {
 
   getBarbers: async (address) => {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
-    const uri = `${BASE_API}users?token=${token}&cep=${address.cep}&street=${address.street}&city=${address.city}`
-    console.log(uri)
-    const response = await fetch(uri);
+    const uri = `${BASE_API}users?cep=${address.cep}&street=${address.street}&city=${address.city}`;
+    const response = await fetch(uri, {
+      method: "GET",
+      headers: {
+        "barber-token": `${token}`,
+      },
+    });
     if (response && response.ok) {
       let json = await response.json();
-      console.log(json)
+      console.log(json);
       // return json;
     } else {
       console.log("HTTP-Error: " + response.status);
@@ -183,8 +187,8 @@ export default {
 
   submitMultipartWithFormData: async (entity, methodName, formData) => {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
-    formData.append('token', token)
-    const uri = `${BASE_API}${entity}`
+    formData.append("token", token);
+    const uri = `${BASE_API}${entity}`;
     const response = await fetch(uri, {
       method: methodName,
       body: formData,
@@ -199,6 +203,5 @@ export default {
       console.log("HTTP-Error: " + response.status);
       alert(await response.text());
     }
-  }
-
+  },
 };

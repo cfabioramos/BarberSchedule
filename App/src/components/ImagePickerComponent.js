@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Image, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import styled from "styled-components/native";
-import { VIOLET_PALLETE } from "../screens/ColorsPalette";
+import { DEFAULT_COLLOR_PALLET } from "../screens/ColorsPalette";
 
 export default ({fieldPlaceholder, imageField, setimageField}) => {
   useEffect(() => {
@@ -35,7 +35,7 @@ export default ({fieldPlaceholder, imageField, setimageField}) => {
   const ImageItem = styled.TouchableOpacity`
     width: 80px;
     height: 80px;
-    border: 1px solid ${VIOLET_PALLETE[1]};
+    border: 1px solid ${DEFAULT_COLLOR_PALLET[1]};
     border-radius: 20px;
     justify-content: center;
     align-items: center;

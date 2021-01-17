@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { VIOLET_PALLETE } from "../screens/ColorsPalette";
+import { DEFAULT_COLLOR_PALLET } from "../screens/ColorsPalette";
 
 const InputArea = styled.View`
     width: 100%;
     height: 40px;
-    background-color: ${VIOLET_PALLETE[3]};
+    background-color: ${DEFAULT_COLLOR_PALLET[3]};
     flex-direction: row;
     border-radius: 30px;
     padding-left: 15px;
@@ -16,18 +16,18 @@ const InputArea = styled.View`
 const NumericInput = styled.TextInput`
     flex: 1;
     font-size: 16px;
-    color: ${VIOLET_PALLETE[0]};
+    color: ${DEFAULT_COLLOR_PALLET[0]};
     margin-left: 10px;
 `;
 
 export default ({IconSvg, placeholder, value, onChangeText, onBlur, password, readOnly, maxLength}) => {
     return (
         <InputArea>
-            <IconSvg width="24" height="24" fill={VIOLET_PALLETE[0]} />
+            <IconSvg width="24" height="24" fill={DEFAULT_COLLOR_PALLET[0]} />
             <NumericInput
                 keyboardType = 'numeric'
                 placeholder={placeholder}
-                placeholderTextColor={VIOLET_PALLETE[0]}
+                placeholderTextColor={DEFAULT_COLLOR_PALLET[0]}
                 value={value}
                 onChangeText={value => {
                     onChangeText(value.replace(/[- #*;,.<>\{\}\[\]\\\/]/gi, ''))

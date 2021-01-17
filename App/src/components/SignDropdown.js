@@ -1,6 +1,6 @@
 import React from "react";
 import DropDownPicker from "react-native-dropdown-picker";
-import { VIOLET_PALLETE } from "../screens/ColorsPalette";
+import { DEFAULT_COLLOR_PALLET } from "../screens/ColorsPalette";
 
 export default ({ options, placeholder, onChangeValue }) => {
   return (
@@ -9,7 +9,7 @@ export default ({ options, placeholder, onChangeValue }) => {
       placeholder={placeholder}
       containerStyle={{ height: 40, marginBottom: 15 }}
       style={{
-        backgroundColor: VIOLET_PALLETE[3],
+        backgroundColor: DEFAULT_COLLOR_PALLET[3],
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         borderBottomLeftRadius: 30,
@@ -20,7 +20,7 @@ export default ({ options, placeholder, onChangeValue }) => {
         justifyContent: "flex-start",
       }}
       dropDownStyle={{
-        backgroundColor: VIOLET_PALLETE[3],
+        backgroundColor: DEFAULT_COLLOR_PALLET[3],
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
         borderWidth: 0,
@@ -28,7 +28,7 @@ export default ({ options, placeholder, onChangeValue }) => {
       labelStyle={{
         fontSize: 18,
         textAlign: "left",
-        color: VIOLET_PALLETE[0],
+        color: DEFAULT_COLLOR_PALLET[0],
       }}
       onChangeItem={(item) => onChangeValue(item.value)}
     />

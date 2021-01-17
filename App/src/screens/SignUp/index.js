@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
-import { VIOLET_PALLETE } from "../ColorsPalette";
+import { DEFAULT_COLLOR_PALLET } from "../ColorsPalette";
 import { validateEmail } from "../../util/Validator";
 import ImagePickerComponent from "../../components/ImagePickerComponent";
 import { TOKEN_KEY } from "../../util/Commons"
@@ -34,13 +34,13 @@ const dropDownOptions = [
   {
     label: "Cliente",
     value: "U",
-    icon: () => <Icon name="user" size={22} color={VIOLET_PALLETE[0]} />,
+    icon: () => <Icon name="user" size={22} color={DEFAULT_COLLOR_PALLET[0]} />,
   },
   {
     label: "Estabelecimento",
     value: "E",
     icon: () => (
-      <Icon name="shopping-cart" size={22} color={VIOLET_PALLETE[0]} />
+      <Icon name="shopping-cart" size={22} color={DEFAULT_COLLOR_PALLET[0]} />
     ),
   },
 ];

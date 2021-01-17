@@ -14,7 +14,6 @@ export const UserReducer = (state, action) => {
         avatar: uriAvatarPrefix + action.payload.avatar, 
         type: action.payload.type 
       };
-      break;
     default:
       return state;
   }
