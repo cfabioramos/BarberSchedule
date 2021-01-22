@@ -103,6 +103,7 @@ export default {
   },
 
   getBarbers: async (address) => {
+    console.log(address)
     const token = await AsyncStorage.getItem(TOKEN_KEY);
     const uri = `${BASE_API}users?cep=${address.cep}&street=${address.street}&city=${address.city}`;
     const response = await fetch(uri, {
@@ -114,13 +115,12 @@ export default {
     if (response && response.ok) {
       let json = await response.json();
       console.log(json);
-      // return json;
+      return json;
     } else {
       console.log("HTTP-Error: " + response.status);
-      alert(await response.text());
-      // return null;
+      console.log(await response.text());
+      return [];
     }
-    return JsonBarbers;
   },
 
   getBarber: async (id) => {

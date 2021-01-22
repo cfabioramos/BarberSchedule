@@ -67,7 +67,7 @@ export default () => {
       if (res.error == "") {
         setList(res.data);
       } else {
-        alert("Erro: " + res.error);
+        alert("Verifique a sua conexão. Ou aguarde algum momento para atualizar. ");
       }
     }
     setLoading(false);

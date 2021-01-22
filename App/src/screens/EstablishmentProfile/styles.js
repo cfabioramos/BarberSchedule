@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components/native";
+import { DEFAULT_COLLOR_PALLET } from '../ColorsPalette'
 
 export const Container = styled.SafeAreaView`
-  background-color: violet;
+  background-color: ${DEFAULT_COLLOR_PALLET[2]};
   flex: 1;
   justify-content: center;
   align-items: center;
@@ -25,6 +26,22 @@ export const CustomButton = styled.TouchableOpacity`
 export const CustomButtonText = styled.Text`
   font-size: 18px;
   color: #fff;
+`;
+
+export const InputHorizontalArea = styled.View`
+  width: 100%;
+  flex-direction: row;
+`;
+
+export const LocalFavButton = styled.TouchableOpacity`
+    width: 50px;
+    height: 40px;
+    background-color: ${DEFAULT_COLLOR_PALLET[3]};
+    border: 2px solid ${DEFAULT_COLLOR_PALLET[4]};
+    border-radius: 15px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
 `;
 
 export const ImageArea = styled.View`

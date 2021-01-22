@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
-import { TOKEN_KEY } from "../../util/Commons"
+import { TOKEN_KEY } from "../../util/Commons";
 
 import Api from "../../Api";
 
@@ -15,13 +15,19 @@ import {
   InputArea,
   CustomButton,
   CustomButtonText,
+  InputHorizontalArea,
   ImageArea,
+  LocalFavButton,
 } from "./styles";
 
 import PersonIcon from "../../assets/person.svg";
-import LocationIcon from "../../assets/location-home.svg";
+import LocationIcon from "../../assets/crosshair.svg";
+import ZipCodeIcon from "../../assets/mail.svg";
+import AddressAIcon from "../../assets/placa_a.svg";
+import HouseNumberIcon from "../../assets/house_number.svg";
 
 import { UserContext } from "../../contexts/UserContext";
+import { DEFAULT_COLLOR_PALLET } from "../ColorsPalette"
 
 export default () => {
   const { dispatch: userDispatch } = useContext(UserContext);
@@ -108,7 +114,9 @@ export default () => {
   const handleCep = async () => {
     if (cepField) {
       const addressObj = await Api.findAddressByCep(cepField);
-      setAddressField(addressObj.logradouro ? addressObj.logradouro : addressObj.localidade);
+      setAddressField(
+        addressObj.logradouro ? addressObj.logradouro : addressObj.localidade
+      );
     } else {
       setAddressField("");
     }
@@ -119,10 +127,13 @@ export default () => {
     formData.append("name", nameField);
     formData.append("cep", cepField);
     formData.append("number", addressNumberField);
-    
-    const userData = await Api.submitMultipartWithFormData('users', 'PUT', formData)
-    if (userData)
-      alert ('Dados atualizados')
+
+    const userData = await Api.submitMultipartWithFormData(
+      "users",
+      "PUT",
+      formData
+    );
+    if (userData) alert("Dados atualizados");
   };
 
   return (
@@ -135,17 +146,23 @@ export default () => {
           onChangeText={(t) => setNameField(t)}
         />
 
-        <NumericInputComponent
-          IconSvg={LocationIcon}
-          placeholder="CEP"
-          value={cepField}
-          onChangeText={(t) => setCepField(t)}
-          onBlur={handleCep}
-          maxLength={8}
-        />
+        <InputHorizontalArea>
+          <LocalFavButton>
+            <LocationIcon width="22" height="22" fill={DEFAULT_COLLOR_PALLET[0]}/>
+          </LocalFavButton>
+          <NumericInputComponent
+            IconSvg={ZipCodeIcon}
+            placeholder="CEP"
+            value={cepField}
+            onChangeText={(t) => setCepField(t)}
+            onBlur={handleCep}
+            maxLength={8}
+            width="80%"
+          />
+        </InputHorizontalArea>
 
         <InputComponent
-          IconSvg={LocationIcon}
+          IconSvg={AddressAIcon}
           placeholder="Endereço"
           value={addressField}
           readOnly={true}
@@ -153,7 +170,7 @@ export default () => {
 
         <FlexibleInputComponent
           width={35}
-          IconSvg={LocationIcon}
+          IconSvg={HouseNumberIcon}
           placeholder="No"
           value={addressNumberField}
           onChangeText={(t) => setAddressNumberField(t)}
