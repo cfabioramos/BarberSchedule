@@ -9,6 +9,11 @@ export const Container = styled.SafeAreaView`
   align-items: center;
 `;
 
+export const Scroller = styled.ScrollView`
+    flex: 1;
+    padding: 20px;
+`;
+
 export const InputArea = styled.View`
   width: 100%;
   padding: 40px;
@@ -50,4 +55,8 @@ export const ImageArea = styled.View`
   width: 100%;
   border-radius: 30px;
   flex-direction: row;
+`;
+
+export const LoadingIcon = styled.ActivityIndicator`
+    margin-top: -40px;
 `;

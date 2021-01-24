@@ -2,8 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { JsonBarbers, JsonBarberId, Appointments, Users } from "./Json";
 import { TOKEN_KEY } from "./util/Commons";
 
-const BASE_API =
-  "http://ec2-52-14-159-78.us-east-2.compute.amazonaws.com:8080/";
+const BASE_API = "http://ec2-52-14-159-78.us-east-2.compute.amazonaws.com:8080/";
 
 const getRequestBody = (method, object) => {
   return {
@@ -88,7 +87,6 @@ export default {
   },
 
   findGeoLocation: async (lat, lng) => {
-    // const token = await AsyncStorage.getItem(TOKEN_KEY);
     const uri = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
     const req = await fetch(uri);
     const json = await req.json();
@@ -103,7 +101,6 @@ export default {
   },
 
   getBarbers: async (address) => {
-    console.log(address)
     const token = await AsyncStorage.getItem(TOKEN_KEY);
     const uri = `${BASE_API}users?cep=${address.cep}&street=${address.street}&city=${address.city}`;
     const response = await fetch(uri, {
@@ -187,14 +184,18 @@ export default {
 
   submitMultipartWithFormData: async (entity, methodName, formData) => {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
-    formData.append("token", token);
     const uri = `${BASE_API}${entity}`;
+    let varHeaders = {
+      "content-type": "multipart/form-data"
+    };
+    if (token) {
+      varHeaders["barber-token"] = `${token}`
+    }
+
     const response = await fetch(uri, {
       method: methodName,
       body: formData,
-      headers: {
-        "content-type": "multipart/form-data",
-      },
+      headers: varHeaders,
     });
     if (response && response.ok) {
       let json = await response.json();

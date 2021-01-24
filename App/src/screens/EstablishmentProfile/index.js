@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { TOKEN_KEY } from "../../util/Commons";
+import * as Location from "expo-location";
 
 import Api from "../../Api";
 
@@ -18,6 +19,8 @@ import {
   InputHorizontalArea,
   ImageArea,
   LocalFavButton,
+  LoadingIcon,
+  Scroller
 } from "./styles";
 
 import PersonIcon from "../../assets/person.svg";
@@ -27,12 +30,14 @@ import AddressAIcon from "../../assets/placa_a.svg";
 import HouseNumberIcon from "../../assets/house_number.svg";
 
 import { UserContext } from "../../contexts/UserContext";
-import { DEFAULT_COLLOR_PALLET } from "../ColorsPalette"
+import { DEFAULT_COLLOR_PALLET } from "../ColorsPalette";
 
 export default () => {
   const { dispatch: userDispatch } = useContext(UserContext);
 
   const navigation = useNavigation();
+
+  const [loading, setLoading] = useState(false);
 
   const [nameField, setNameField] = useState("");
 
@@ -136,89 +141,127 @@ export default () => {
     if (userData) alert("Dados atualizados");
   };
 
+  const handleFavClick = async () => {
+    setLoading(true);    
+    (async () => {
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Highest,
+      });
+
+      let geoLocationData = await Api.findGeoLocation(
+        location.coords.latitude,
+        location.coords.longitude
+      );
+
+      const newCep = geoLocationData.address.postcode;
+      if (newCep) {
+        setCepField(newCep);
+        const addressObj = await Api.findAddressByCep(newCep);
+        setAddressField(
+          addressObj.logradouro ? addressObj.logradouro : addressObj.localidade
+        );
+      }
+      setLoading(false);
+    })();
+  };
+
   return (
     <Container>
-      <InputArea>
-        <InputComponent
-          IconSvg={PersonIcon}
-          placeholder="Nome"
-          value={nameField}
-          onChangeText={(t) => setNameField(t)}
-        />
+      <Scroller>
+        <InputArea>
+          <InputComponent
+            IconSvg={PersonIcon}
+            placeholder="Nome"
+            value={nameField}
+            onChangeText={(t) => setNameField(t)}
+          />
 
-        <InputHorizontalArea>
-          <LocalFavButton>
-            <LocationIcon width="22" height="22" fill={DEFAULT_COLLOR_PALLET[0]}/>
-          </LocalFavButton>
-          <NumericInputComponent
-            IconSvg={ZipCodeIcon}
-            placeholder="CEP"
-            value={cepField}
-            onChangeText={(t) => setCepField(t)}
-            onBlur={handleCep}
-            maxLength={8}
-            width="80%"
-          />
-        </InputHorizontalArea>
+          <InputHorizontalArea>
+            <LocalFavButton onPress={handleFavClick}>
+              <LocationIcon
+                width="22"
+                height="22"
+                fill={DEFAULT_COLLOR_PALLET[0]}
+              />
+            </LocalFavButton>
+            <NumericInputComponent
+              IconSvg={ZipCodeIcon}
+              placeholder="CEP"
+              value={cepField}
+              onChangeText={(t) => setCepField(t)}
+              onBlur={handleCep}
+              maxLength={9}
+              width="80%"
+            />
+          </InputHorizontalArea>
 
-        <InputComponent
-          IconSvg={AddressAIcon}
-          placeholder="Endereço"
-          value={addressField}
-          readOnly={true}
-        />
+          <InputComponent
+            IconSvg={AddressAIcon}
+            placeholder="Endereço"
+            value={addressField}
+            readOnly={true}
+          />
 
-        <FlexibleInputComponent
-          width={35}
-          IconSvg={HouseNumberIcon}
-          placeholder="No"
-          value={addressNumberField}
-          onChangeText={(t) => setAddressNumberField(t)}
-          maxLength={6}
-        />
+          <FlexibleInputComponent
+            width={35}
+            IconSvg={HouseNumberIcon}
+            placeholder="No"
+            value={addressNumberField}
+            onChangeText={(t) => setAddressNumberField(t)}
+            maxLength={6}
+          />
 
-        <ImageArea>
-          <ImagePickerComponent
-            fieldPlaceholder="Imagem"
-            imageField={imageFieldA}
-            setimageField={setImageFieldA}
-          />
-          <ImagePickerComponent
-            fieldPlaceholder="Imagem"
-            imageField={imageFieldB}
-            setimageField={setImageFieldB}
-          />
-          <ImagePickerComponent
-            fieldPlaceholder="Imagem"
-            imageField={imageFieldC}
-            setimageField={setImageFieldC}
-          />
-        </ImageArea>
-        <ImageArea>
-          <ImagePickerComponent
-            fieldPlaceholder="Imagem"
-            imageField={imageFieldD}
-            setimageField={setImageFieldD}
-          />
-          <ImagePickerComponent
-            fieldPlaceholder="Imagem"
-            imageField={imageFieldE}
-            setimageField={setImageFieldE}
-          />
-          <ImagePickerComponent
-            fieldPlaceholder="Imagem"
-            imageField={imageFieldF}
-            setimageField={setImageFieldF}
-          />
-        </ImageArea>
+          {loading && <LoadingIcon size="large" color="#FFFFFF" />}
 
-        <CustomButton onPress={handleUpdateClick}>
-          <CustomButtonText>ATUALIZAR</CustomButtonText>
-        </CustomButton>
-        <CustomButton onPress={handleLogoutClick}>
-          <CustomButtonText>SAIR</CustomButtonText>
-        </CustomButton>
-      </InputArea>
+          <ImageArea>
+            <ImagePickerComponent
+              fieldPlaceholder="Imagem"
+              imageField={imageFieldA}
+              setimageField={setImageFieldA}
+            />
+            <ImagePickerComponent
+              fieldPlaceholder="Imagem"
+              imageField={imageFieldB}
+              setimageField={setImageFieldB}
+            />
+            <ImagePickerComponent
+              fieldPlaceholder="Imagem"
+              imageField={imageFieldC}
+              setimageField={setImageFieldC}
+            />
+          </ImageArea>
+          <ImageArea>
+            <ImagePickerComponent
+              fieldPlaceholder="Imagem"
+              imageField={imageFieldD}
+              setimageField={setImageFieldD}
+            />
+            <ImagePickerComponent
+              fieldPlaceholder="Imagem"
+              imageField={imageFieldE}
+              setimageField={setImageFieldE}
+            />
+            <ImagePickerComponent
+              fieldPlaceholder="Imagem"
+              imageField={imageFieldF}
+              setimageField={setImageFieldF}
+            />
+          </ImageArea>         
+
+          <CustomButton onPress={handleUpdateClick}>
+            <CustomButtonText>ATUALIZAR</CustomButtonText>
+          </CustomButton>
+          <CustomButton onPress={handleLogoutClick}>
+            <CustomButtonText>SAIR</CustomButtonText>
+          </CustomButton>
+        </InputArea>
+      </Scroller>
     </Container>
   );
 };
