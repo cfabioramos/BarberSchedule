@@ -40,10 +40,11 @@ export default () => {
   const [loading, setLoading] = useState(false);
 
   const [nameField, setNameField] = useState("");
-
   const [cepField, setCepField] = useState();
   const [addressField, setAddressField] = useState("");
   const [addressNumberField, setAddressNumberField] = useState("");
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
 
   const [imageFieldA, setImageFieldA] = useState(null);
   const [imageFieldB, setImageFieldB] = useState(null);
@@ -132,6 +133,8 @@ export default () => {
     formData.append("name", nameField);
     formData.append("cep", cepField);
     formData.append("number", addressNumberField);
+    formData.append("latitude", latitude);
+    formData.append("longitude", longitude);
 
     const userData = await Api.submitMultipartWithFormData(
       "users",
@@ -154,6 +157,8 @@ export default () => {
         accuracy: Location.Accuracy.Highest,
       });
 
+      setLatitude(location.coords.latitude)
+      setLongitude(location.coords.longitude)
       let geoLocationData = await Api.findGeoLocation(
         location.coords.latitude,
         location.coords.longitude
