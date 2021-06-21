@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { JsonBarbers, JsonBarberId, Appointments, Users } from "./Json";
 import { TOKEN_KEY } from "./util/Commons";
 
-const BASE_API = "http://ec2-52-14-159-78.us-east-2.compute.amazonaws.com:8080/";
+const BASE_API = "http://ec2-18-118-173-115.us-east-2.compute.amazonaws.com:8080/";
 
 const getRequestBody = (method, object) => {
   return {
