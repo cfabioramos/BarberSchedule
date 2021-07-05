@@ -27,7 +27,7 @@ export default () => {
   const [refreshing, setRefreshing] = useState(false);
   const [barberName, setBarberName] = useState();
 
-  const getFavoriteBarbers = async () => {
+  /*const getFavoriteBarbers = async () => {
     setLoading(true);
     setList([]);
 
@@ -55,26 +55,25 @@ export default () => {
 
   const handleBarberSearch = () => {
       console.log(barberName)
-  }
+  }*/
 
   return (
     <Container>
       <Scroller
-        refreshControl={
+        /*refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+        }*/
       >
         <HeaderArea>
-          <BackButton onPress={handleBackButton}>
+          <BackButton >
             <BackIcon width="35" height="35" fill="#FFFFFF" />
           </BackButton>
           <HeaderInputArea>
             <HeaderInput
-                placeholder="Digite o nome do barbeiro"
+                placeholder="O que voçê está procurando?"
                 placeholderTextColor="#FFFFFF"
                 value={barberName}
                 onChangeText={(t) => setBarberName(t)}
-                onEndEditing={handleBarberSearch}
             />
           </HeaderInputArea>
         </HeaderArea>

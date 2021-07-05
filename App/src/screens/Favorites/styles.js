@@ -13,8 +13,9 @@ export const Scroller = styled.ScrollView`
 
 export const HeaderArea = styled.View`
   margin-left: -10px;
+  margin-top:20px;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 `;
 
@@ -29,10 +30,12 @@ export const HeaderTitle = styled.Text`
 `;
 
 export const LoadingIcon = styled.ActivityIndicator`
-  margin-top: 50px;
+  margin-top: 100px;
 `;
 
 export const ListArea = styled.View`
   margin-top: 30px;
   margin-bottom: 30px;
 `;
+
+  

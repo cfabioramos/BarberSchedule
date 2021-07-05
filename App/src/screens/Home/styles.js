@@ -32,13 +32,13 @@ export const SearchButton = styled.TouchableOpacity`
 
 export const LocationArea = styled.View`
     background-color: #b641a9;
-    height: 60px;
+    height: 45px;
     border-radius: 30px;
     flex-direction: row;
     align-items: center;
     padding-left: 20px;
     padding-right: 20px;
-    margin-top: 30px;
+    margin-top: 20px;
 `;
 
 export const LocationInput = styled.TextInput`
@@ -59,4 +59,62 @@ export const LoadingIcon = styled.ActivityIndicator`
 export const ListArea = styled.View`
     margin-top: 30px;
     margin-bottom: 30px;
+`;
+
+
+export const DistanceButton = styled.TouchableOpacity`
+            flex-direction: row;
+            width: 85px;
+            height:25px;
+            background-color: #b641a9;
+            align-items:center;
+            justify-content:center;
+            border-radius:20px;
+
+`;
+export const AvaliacaoButton = styled.TouchableOpacity`
+            flex-direction: row;
+            width: 85px;
+            height:25px;
+            background-color: #b641a9;
+            align-items:center;
+            justify-content:center;
+            border-radius:20px;
+            
+`;
+export const ButtonText = styled.Text`
+    font-size: 12px;
+    color: white;
+  
+`;
+
+export const ButtonArea = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px
+    height :30px;
+    padding : 30px;
+
+`;
+
+export const FiltroLabel = styled.Text`
+        font-size:13px;
+        color: white;
+`;
+export const NameArea = styled.View`
+    background-color: #b641a9;
+    height: 45px;
+    border-radius: 30px;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 10px;
+`;
+
+export const NameInput = styled.TextInput`
+    flex: 1;
+    font-size: 16px;
+    color: #FFFFFF;
 `;

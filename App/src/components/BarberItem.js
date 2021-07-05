@@ -41,19 +41,35 @@ const SeeProfileButtonText = styled.Text`
   font-size: 13px;
   color: #8b4488;
 `;
+const ShowDistance =styled.Text`
+    font-size: 13px;
+    font-weight: bold; 
+`;
 
 export default ({ data }) => {
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
+  if(data.id==9){
+     distancia="9-km";
+  }else if(data.id==10){
+     distancia="10-km";
+  }else if(data.id==7){
+      distancia="7-km";
+  }else {
+    distancia="11-km";
+  }
+  
   const handleClick = () => {
     navigation.navigate('BarberDetail', {
       id: data.id,
       avatar: data.avatar,
       name: data.name,
-      stars: data.stars
-    })
+      stars: data.stars, 
+      
+    })   
   }
+  
 
   return (
     <Area onPress={handleClick}>
@@ -61,6 +77,7 @@ export default ({ data }) => {
       <InfoArea>
         <UserName>{data.name}</UserName>
         <Stars stars={data.stars} showNumber={true} />
+        <ShowDistance>Distância :{distancia}</ShowDistance>
         <SeeProfileButton>
           <SeeProfileButtonText>Ver Perfil</SeeProfileButtonText>
         </SeeProfileButton>

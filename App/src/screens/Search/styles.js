@@ -23,16 +23,20 @@ export const BackButton = styled.TouchableOpacity`
 `;
 
 export const HeaderInputArea = styled.View`
+  margin-top: 100px;
   background-color: #b641a9;
   height: 40px;
   border-radius: 30px;
   width: 310px;
+  align-items:center;
+  justify-content :center
 `;
 
 export const HeaderInput = styled.TextInput`
   flex: 1;
   font-size: 15px;
   color: #ffffff;
+  
 `;
 
 export const LoadingIcon = styled.ActivityIndicator`
