@@ -1,18 +1,27 @@
 export const initialState = {
-  avatar: '',
+  avatar: "",
   favorites: [],
   appointments: [],
-  type: ''
+  type: "",
+  idCategory: null,
 };
 
-const uriAvatarPrefix = 'https://barberschedulerbucket.s3.us-east-2.amazonaws.com/'
+const uriAvatarPrefix =
+  "https://barberschedulerbucket.s3.us-east-2.amazonaws.com/";
 
 export const UserReducer = (state, action) => {
   switch (action.type) {
     case "setUserContext":
-      return { ...state, 
-        avatar: uriAvatarPrefix + action.payload.avatar, 
-        type: action.payload.type 
+      return {
+        ...state,
+        avatar: uriAvatarPrefix + action.payload.avatar,
+        type: action.payload.type,
+        idCategory: action.payload.idCategory,
+      };
+    case "setIdCategory":
+      return {
+        ...state,
+        idCategory: action.payload.idCategory,
       };
     default:
       return state;

@@ -47,10 +47,13 @@ export default ({ state, navigation }) => {
     navigation.navigate(screenName);
   };
 
-  return (
-    <>
-      {user.type === "U" || user.type === "A" ? (
-        <TabArea>
+  const USER_TYPE = "U";
+  const USER_ADMIN_TYPE = "A";
+  const isUser = user.type === USER_TYPE || user.type === USER_ADMIN_TYPE;
+  
+  if (isUser && user.idCategory) {
+    return (
+      <TabArea>
           <TabItem onPress={() => goTo("Home")}>
             <HomeIcon
               style={{ opacity: state.index === 0 ? 1 : 0.5 }}
@@ -105,8 +108,52 @@ export default ({ state, navigation }) => {
             </TabItem>
           )}
         </TabArea>
-      ) : (
-        <TabArea>
+    );
+  } else if (isUser) {
+    return (
+      <TabArea>
+      
+          <TabItem onPress={() => goTo("Home")}>
+            <HomeIcon
+              style={{ opacity: state.index === 0 ? 1 : 0.5 }}
+              width="24"
+              height="24"
+              fill="#FFFFFF"
+            />
+          </TabItem>
+
+          <TabItemCenter onPress={() => goTo("Appointments")}>
+            <TodayIcon width="32" height="32" fill={DEFAULT_COLLOR_PALLET[1]} />
+          </TabItemCenter>
+
+          <TabItem onPress={() => goTo("Profile")}>
+            {user.avatar != "" ? (
+              <AvatarIcon source={{ uri: user.avatar }} />
+            ) : (
+              <AccountIcon
+                style={{ opacity: state.index === 4 ? 1 : 0.5 }}
+                width="24"
+                height="24"
+                fill="#FFFFFF"
+              />
+            )}
+          </TabItem>
+
+          {user.type === "A" && (
+            <TabItem onPress={() => goTo("ColorsPalette")}>
+              <StarIcon
+                style={{ opacity: state.index === 5 ? 1 : 0.5 }}
+                width="24"
+                height="24"
+                fill="#FFFFFF"
+              />
+            </TabItem>
+          )}
+        </TabArea>
+    );
+  } else {
+    return (
+      <TabArea>
           <TabItem onPress={() => goTo("EstablishmentProfile")}>
             {user.avatar != "" ? (
               <AvatarIcon source={{ uri: user.avatar }} />
@@ -131,7 +178,6 @@ export default ({ state, navigation }) => {
             />
           </TabItem>
         </TabArea>
-      )}
-    </>
-  );
+    );
+  }
 };

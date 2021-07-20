@@ -22,12 +22,14 @@ export default () => {
       if (token) {
         let res = await Api.checkToken(token);
         if (res) {
+          const objPayload = {
+            avatar: res.avatar,
+            type: res.type,
+            idCategory: 1
+          }
           userDispatch({
             type: "setUserContext",
-            payload: {
-              avatar: res.avatar,
-              type: res.type
-            },
+            payload: objPayload,
           });
           navigation.navigate("MainTab");
         } else {

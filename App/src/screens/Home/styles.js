@@ -1,120 +1,69 @@
-import React from 'react';
-import styled from 'styled-components/native';
+import React from "react";
+import styled from "styled-components/native";
 
 export const Container = styled.SafeAreaView`
-    flex: 1;
-    background-color: violet;
+  flex: 1;
+  background-color: violet;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const Scroller = styled.ScrollView`
-    flex: 1;
-    padding: 20px;
+  flex: 1;
+  padding: 20px;
 `;
 
 export const HeaderArea = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 30px;
-`;
-
-export const HeaderTitle = styled.Text`
-    width: 250px;
-    font-size: 24px;
-    font-weight: bold;
-    color: #FFF;
-`;
-
-export const SearchButton = styled.TouchableOpacity`
-    width: 26px;
-    height: 26px;
-`;
-
-export const LocationArea = styled.View`
-    background-color: #b641a9;
-    height: 45px;
-    border-radius: 30px;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 20px;
-    padding-right: 20px;
-    margin-top: 20px;
-`;
-
-export const LocationInput = styled.TextInput`
-    flex: 1;
-    font-size: 16px;
-    color: #FFFFFF;
-`;
-
-export const LocationFinder = styled.TouchableOpacity`
-    width: 24px;
-    height: 24px;
-`;
-
-export const LoadingIcon = styled.ActivityIndicator`
-    margin-top: 50px;
-`;
-
-export const ListArea = styled.View`
-    margin-top: 30px;
-    margin-bottom: 30px;
+  justify-content: center;
+  align-items: center;
 `;
 
 
-export const DistanceButton = styled.TouchableOpacity`
-            flex-direction: row;
-            width: 85px;
-            height:25px;
-            background-color: #b641a9;
-            align-items:center;
-            justify-content:center;
-            border-radius:20px;
 
+export const HeaderInputArea = styled.View`
+  margin-top: 100px;
+  background-color: #b641a9;
+  height: 40px;
+  border-radius: 30px;
+  width: 310px;
+  align-items:center;
+  justify-content :center
 `;
-export const AvaliacaoButton = styled.TouchableOpacity`
-            flex-direction: row;
-            width: 85px;
-            height:25px;
-            background-color: #b641a9;
-            align-items:center;
-            justify-content:center;
-            border-radius:20px;
-            
-`;
-export const ButtonText = styled.Text`
-    font-size: 12px;
-    color: white;
+
+export const HeaderInput = styled.TextInput`
+  flex: 1;
+  font-size: 15px;
+  color: #ffffff;
   
 `;
 
-export const ButtonArea = styled.View`
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px
-    height :30px;
-    padding : 30px;
-
+export const LoadingIcon = styled.ActivityIndicator`
+  margin-top: 50px;
 `;
 
-export const FiltroLabel = styled.Text`
-        font-size:13px;
-        color: white;
-`;
-export const NameArea = styled.View`
-    background-color: #b641a9;
-    height: 45px;
-    border-radius: 30px;
-    flex-direction: row;
-    align-items: center;
-    padding-left: 20px;
-    padding-right: 20px;
-    margin-top: 10px;
+export const ListArea = styled.SafeAreaView`
+  background-color: #b641a9;
+  height: 400px;
+  width: 310px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 60px;
+  padding :15px;
+  border-radius:20px;
 `;
 
-export const NameInput = styled.TextInput`
-    flex: 1;
-    font-size: 16px;
-    color: #FFFFFF;
-`;
+ export const ListaText = styled.Text`
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff; 
+ `;
+ export const ListButton = styled.TouchableOpacity`
+  width: 250px;
+  height:50px;
+  background-color:violet;
+  margin-top:20px;
+  border-radius:10px;
+  justify-content:center;
+  align-items:center;
+ `;
+
