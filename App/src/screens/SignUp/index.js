@@ -4,9 +4,9 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { DEFAULT_COLLOR_PALLET } from "../ColorsPalette";
 import { validateEmail } from "../../util/Validator";
 import ImagePickerComponent from "../../components/ImagePickerComponent";
-import { TOKEN_KEY } from "../../util/Commons"
-
+import { TOKEN_KEY, GET_ERROR_MESSAGE  } from "../../util/Commons";
 import { UserContext } from "../../contexts/UserContext";
+import ModalErro from "../../components/ModalErro";
 import {
   Container,
   InputArea,
@@ -15,14 +15,14 @@ import {
   SignMessageButton,
   SignMessageButtonText,
   SignMessageButtonTextBold,
-  ImageArea
+  ImageArea,
 } from "./styles";
 
 import InputComponent from "../../components/InputComponent";
 import SignDropdown from "../../components/SignDropdown";
 
 import Api from "../../Api";
-import Commons from '../../util/Commons'
+import Commons from "../../util/Commons";
 
 import BarberLogo from "../../assets/barber_2.svg";
 import PersonIcon from "../../assets/person.svg";
@@ -54,7 +54,12 @@ export default () => {
   const [emailField, setEmailField] = useState("");
   const [passwordField, setPasswordField] = useState("");
   const [typeField, setTypeField] = useState("");
-  
+  const [modalAttributes, setModalAttributes] = useState({
+    isModalVisible: false,
+    errorMessage: "",
+    cb: setModalAttributes,
+  });
+
   const handleSignClick = async () => {
     if (nameField != "" && emailField != "" && passwordField != "") {
       if (typeField == "") {
@@ -65,36 +70,46 @@ export default () => {
           alert("Verifique o formato do E-mail");
           return;
         }
-        
-        let objectImageData = Commons.getImageDataFromLocal(imageField)
-        let filename = objectImageData.filename
-        let type = objectImageData.type
-        
+
+        let objectImageData = Commons.getImageDataFromLocal(imageField);
+        let filename = objectImageData.filename;
+        let type = objectImageData.type;
+
         const formData = new FormData();
-        formData.append('image', { uri: imageField, name: filename, type })
-        formData.append('name', nameField)
-        formData.append('email', email)
-        formData.append('password', passwordField)
-        formData.append('type', typeField)
-        
-        let json = await Api.submitMultipartWithFormData('users', 'POST', formData)
-        if (json.token) {
-          await AsyncStorage.setItem(TOKEN_KEY, json.token);
-          userDispatch({
-            type: "setUserContext",
-            payload: {
-              avatar: json.avatar,
-              type: json.type,
-            },
-          });
-          navigation.reset({
-            routes: [{ name: "MainTab" }],
+        formData.append("image", { uri: imageField, name: filename, type });
+        formData.append("name", nameField);
+        formData.append("email", email);
+        formData.append("password", passwordField);
+        formData.append("type", typeField);
+        try {
+          let json = await Api.submitMultipartWithFormData(
+            "users",
+            "POST",
+            formData
+          );
+
+          if (json.token) {
+            await AsyncStorage.setItem(TOKEN_KEY, json.token);
+            userDispatch({
+              type: "setUserContext",
+              payload: {
+                avatar: json.avatar,
+                type: json.type,
+              },
+            });
+            navigation.reset({
+              routes: [{ name: "MainTab" }],
+            });
+          }
+        } catch (error) {
+          setModalAttributes({
+            isModalVisible: true,
+            errorMessage: GET_ERROR_MESSAGE(error),
+            cb: setModalAttributes,
           });
         }
       }
-    } else {
-      alert("Preencha os campos");
-    } 
+    }
   };
 
   const handleMessageButtonClick = () => {
@@ -105,6 +120,7 @@ export default () => {
 
   return (
     <Container>
+      <ModalErro controlObject={modalAttributes} />
       <BarberLogo width="100%" height="140" />
 
       <ImageArea>

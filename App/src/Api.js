@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage";
-import { JsonBarbers, JsonBarberId, Appointments, Users } from "./Json";
+import { JsonBarberId, Appointments, Users } from "./Json";
+import AppTypedError from "./util/AppTypedError";
 import { TOKEN_KEY } from "./util/Commons";
 
 const BASE_API = "http://ec2-18-118-173-115.us-east-2.compute.amazonaws.com:8080/";
@@ -111,12 +112,9 @@ export default {
     });
     if (response && response.ok) {
       let json = await response.json();
-      console.log(json);
       return json;
     } else {
-      console.log("HTTP-Error: " + response.status);
-      console.log(await response.text());
-      return [];
+      throw new AppTypedError(await response.text())
     }
   },
 
@@ -201,8 +199,7 @@ export default {
       let json = await response.json();
       return json;
     } else {
-      console.log("HTTP-Error: " + response.status);
-      alert(await response.text());
+      throw new AppTypedError(await response.text())
     }
   },
 };

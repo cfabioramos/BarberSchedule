@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { RefreshControl } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
-
 import Api from "../../Api";
+import BarberItem from "../../components/BarberItem";
+import SearchIcon from "../../assets/search.svg";
+import MyLocationIcon from "../../assets/my_location.svg";
+import SetaIcon from "../../assets/expand.svg";
+import ModalErro from "../../components/ModalErro";
 
 import {
   Container,
@@ -25,26 +29,16 @@ import {
   NameInput,
 } from "./styles";
 
-import BarberItem from "../../components/BarberItem";
-
-import SearchIcon from "../../assets/search.svg";
-import MyLocationIcon from "../../assets/my_location.svg";
-import SetaIcon from "../../assets/expand.svg";
-import Home from "../Home";
-import { takeSnapshotAsync } from "expo";
-
-
 export default () => {
-  const navigation = useNavigation();
-
   const [locationText, setLocationText] = useState("");
   const [addressSearchObject, setAddressSearchObject] = useState({});
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [modalAttributes, setModalAttributes] = useState({'isModalVisible': false, 'errorMessage': '', 'cb': setModalAttributes});
 
   const handleGeoLocationControl = async () => {
-    setAddressSearchObject({})
+    setAddressSearchObject({});
     setLoading(true);
     setLocationText("");
     setList([]);
@@ -53,7 +47,7 @@ export default () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
-        return
+        return;
       }
 
       let location = await Location.getCurrentPositionAsync({
@@ -65,29 +59,30 @@ export default () => {
         location.coords.longitude
       );
       setAddressSearchObject({
-        ...addressSearchObject, ...{
+        ...addressSearchObject,
+        ...{
           cep: geoLocationData.address.postcode,
-          street: geoLocationData.address.road, city: geoLocationData.address.city
-        }
-      })
+          street: geoLocationData.address.road,
+          city: geoLocationData.address.city,
+        },
+      });
       setLocationText(geoLocationData.address.city);
     })();
   };
 
-  
   const getBarbers = async () => {
     setList([]);
 
     if (locationText) {
-      let res = await Api.getBarbers(addressSearchObject);
-      if (res.error == "") {
+      try {
+        let res = await Api.getBarbers(addressSearchObject);
         setList(res.data);
-       
-      } else {
-        alert("Verifique a sua conexão. Ou aguarde algum momento para atualizar. ");
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        setModalAttributes({'isModalVisible': true, 'errorMessage': error.message, 'cb': setModalAttributes})
       }
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -103,68 +98,60 @@ export default () => {
     getBarbers();
   };
 
-  /*const handleLocationSearch = () => {
-    getBarbers();
-  };*/
+  const [searchText, setSearchText] = useState();
 
-  
-  
-  const [searchText,setSearchText]=useState();
-
-  useEffect(()=>{
-   let OterList = [...list];
-   if (searchText === '') {
+  useEffect(() => {
+    let OterList = [...list];
+    if (searchText === "") {
       getBarbers();
-  } else {
-    setList(
-      OterList.filter(
-        (item) =>
-          item.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1
-      )
-    );
-  }
-}, [searchText]);
+    } else {
+      setList(
+        OterList.filter(
+          (item) =>
+            item.name.toLowerCase().indexOf(searchText.toLowerCase()) > -1
+        )
+      );
+    }
+  }, [searchText]);
 
   const handleOrdering = async () => {
-    let newList = [...list]
+    let newList = [...list];
     setList([]);
 
-    setList(newList.sort((a, b) => (b.stars < a.stars) ? -1 : (b.stars > a.stars) ? 1 : 0))
-
+    setList(
+      newList.sort((a, b) =>
+        b.stars < a.stars ? -1 : b.stars > a.stars ? 1 : 0
+      )
+    );
   };
 
-  const handleDistance= async () => {
-    let newList = [...list]
+  const handleDistance = async () => {
+    let newList = [...list];
     setList([]);
 
-    setList(newList.sort((a, b) => (a.id < b.id) ? -1 : (a.id > b.id) ? 1 : 0))
-
+    setList(newList.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)));
   };
 
   return (
     <Container>
+      <ModalErro controlObject={modalAttributes} />
       <Scroller
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
         <HeaderArea>
-          <HeaderTitle numberOfLines={2}>
-            Encontre o melhor salão
-          </HeaderTitle>
-          <SearchButton >
+          <HeaderTitle numberOfLines={2}>Encontre o melhor salão</HeaderTitle>
+          <SearchButton>
             <SearchIcon width="26" height="26" fill="#FFFFFF" />
           </SearchButton>
-
         </HeaderArea>
 
         <LocationArea>
-          {
-            /*
+          {/*
               onEndEditing={handleLocationSearch}
               tem que ser melhor pensado.
-            */
-          }
+            */}
           <LocationInput
             placeholder="Onde você está?"
             placeholderTextColor="#FFFFFF"
@@ -181,10 +168,9 @@ export default () => {
             placeholder="Pesquise por nome...."
             placeholderTextColor="#FFFFFF"
             value={searchText}
-            onChangeText={(t)=>setSearchText(t)}
+            onChangeText={(t) => setSearchText(t)}
           />
         </NameArea>
-
 
         <ButtonArea>
           <FiltroLabel>Ordenar por:</FiltroLabel>
@@ -193,11 +179,10 @@ export default () => {
             <SetaIcon width="17" height="17" fill="#FFFFFF" />
           </DistanceButton>
           <AvaliacaoButton onPress={handleOrdering}>
-            <ButtonText >Avaliação</ButtonText>
+            <ButtonText>Avaliação</ButtonText>
             <SetaIcon width="17" height="17" fill="#FFFFFF" />
           </AvaliacaoButton>
         </ButtonArea>
-
 
         {loading && <LoadingIcon size="large" color="#FFFFFF" />}
 
