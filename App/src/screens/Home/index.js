@@ -19,14 +19,13 @@ const Home = () => {
   const navigation = useNavigation();
   const { state: user, dispatch: userDispatch } = useContext(UserContext);
 
-  const [ loading ] = useState(false);
-  const [categoryName, setCategoryBarberName] = useState();
+  const [loading] = useState(false);
 
-  const nextRouteName = user && user.idCategory ? "Search" : "Home"
+  const nextRouteName = user && user.idCategory ? "Search" : "Home";
 
-  useEffect(()=>{
-    navigation.navigate(nextRouteName)
-  }, [user])
+  useEffect(() => {
+    navigation.navigate(nextRouteName);
+  }, [user]);
 
   const [typeService, setTypeService] = useState([
     { name: "Salão de Beleza", id: "1" },
@@ -36,6 +35,21 @@ const Home = () => {
     { name: "Estética Corporal", id: "5" },
     { name: "Massagem linfática", id: "6" },
   ]);
+
+  const [categoryName, setCategoryName] = useState("");
+  const [oterList, setOterList] = useState(typeService);
+  useEffect(() => {
+    if (categoryName === "") {
+      setOterList(typeService);
+    } else {
+      setOterList(
+        typeService.filter(
+          (item) =>
+            item.name.toLowerCase().indexOf(categoryName.toLowerCase()) > -1
+        )
+      );
+    }
+  }, [categoryName]);
 
   const defineCategory = (idCategory) => {
     if (user.idCategory) {
@@ -47,7 +61,6 @@ const Home = () => {
       });
       navigation.navigate("MainTab");
     }
-  
   };
 
   return (
@@ -58,7 +71,7 @@ const Home = () => {
             placeholder="O que você está procurando?"
             placeholderTextColor="#FFFFFF"
             value={categoryName}
-            onChangeText={(t) => setCategoryBarberName(t)}
+            onChangeText={(t) => setCategoryName(t)}
           />
         </HeaderInputArea>
       </HeaderArea>
@@ -68,7 +81,7 @@ const Home = () => {
       <ListArea>
         <FlatList
           keyExtractor={(item) => item.id}
-          data={typeService}
+          data={oterList}
           renderItem={({ item }) => (
             <ListButton onPress={() => defineCategory(item.id)}>
               <ListaText>{item.name}</ListaText>
@@ -79,6 +92,5 @@ const Home = () => {
     </Container>
   );
 };
-
 
 export default Home;

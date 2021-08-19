@@ -78,7 +78,7 @@ export default ({ controlObject }) => {
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <Text style={styles.modalTextTitle}>Error !</Text>
+          <Text style={styles.modalTextTitle}>Erro </Text>
           <Text style={styles.modalText}>{controlObject.errorMessage}</Text>
           <Pressable
             style={[styles.button, styles.buttonClose]}

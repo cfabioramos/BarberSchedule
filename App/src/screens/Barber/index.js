@@ -62,13 +62,12 @@ export default () => {
   useEffect(() => {
     const getBarberInfo = async () => {
       setLoading(true);
-
-      let json = await Api.getBarber(userInfo.id);
-      if (json.error == "") {
-        setUserInfo(json.data);
-        setFavorited(json.data.favorited)
-      } else {
-        alert("Erro: " + json.error);
+      try {
+        let json = await Api.getBarber(userInfo.id);
+        //setUserInfo(json);
+        setFavorited(json.isFavorite);
+      } catch (error) {
+        alert("Erro: " + error);
       }
       setLoading(false);
     };
@@ -80,18 +79,29 @@ export default () => {
   };
 
   const handleFavClick = async () => {
-    let json = await Api.setFavoriteBarber(userInfo.id);
-    if (json.error == "") {
-      setFavorited( !favorited )
+    if (!favorited) {
+      try {
+        const favoriteRep = await Api.setFavoriteBarber(userInfo.id);
+        if (favoriteRep.idUserFavorite) {
+          setFavorited(true);
+        }
+      } catch (error) {
+        alert("Erro: " + error);
+      }
     } else {
-      alert("Erro: " + json.error);
+      try {
+        await Api.deleteFavoriteBarber(userInfo.id);
+        setFavorited(false);
+      } catch (error) {
+        alert("Erro: " + error);
+      }
     }
-  }
+  };
 
   const handleServiceChoose = (key) => {
-    setSelectedService(key)
-    setShowModal(true)
-  }
+    setSelectedService(key);
+    setShowModal(true);
+  };
 
   return (
     <Container>
@@ -121,10 +131,11 @@ export default () => {
               <Stars stars={userInfo.stars} showNumber={true} />
             </UserInfo>
             <UserFavButton onPress={handleFavClick}>
-              { favorited ?
-                <FavoriteFullIcon width="24" height="24" fill="#FF0000" /> : 
+              {favorited ? (
+                <FavoriteFullIcon width="24" height="24" fill="#FF0000" />
+              ) : (
                 <FavoriteIcon width="24" height="24" fill="#FF0000" />
-              }
+              )}
             </UserFavButton>
           </UserInfoArea>
 
@@ -139,21 +150,21 @@ export default () => {
                     <ServiceName>{item.name}</ServiceName>
                     <ServicePrice>R$ {item.price.toFixed(2)}</ServicePrice>
                   </ServiceInfo>
-                  <ServiceChooseButton onPress={ () => handleServiceChoose(key) }>
+                  <ServiceChooseButton onPress={() => handleServiceChoose(key)}>
                     <ServiceChooseBtnText>Agendar</ServiceChooseBtnText>
                   </ServiceChooseButton>
                 </ServiceItem>
               ))}
             </ServiceArea>
           )}
-          { userInfo.services && userInfo.services.length > 0 && 
-            <BarberModal 
-              show={showModal} 
+          {userInfo.services && userInfo.services.length > 0 && (
+            <BarberModal
+              show={showModal}
               setShow={setShowModal}
               data={userInfo}
               service={selectedService}
             />
-          }
+          )}
 
           {userInfo.testimonials && userInfo.testimonials.length > 0 && (
             <TestimonialArea>

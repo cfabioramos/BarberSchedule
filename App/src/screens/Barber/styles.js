@@ -37,7 +37,7 @@ export const SwipeImage = styled.Image`
 `;
 
 export const FakeSwiper = styled.View`
-    height: 140px;
+    height: 270px;
     background-color: violet;
 `;
 

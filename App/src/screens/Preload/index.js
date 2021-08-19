@@ -4,11 +4,8 @@ import { Container, LoadingIcon } from "./styles";
 import AsyncStorage from "@react-native-community/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { TOKEN_KEY } from "../../util/Commons"
-
 import BarberLogo from "../../assets/barber_2.svg";
-
 import Api from "../../Api";
-
 import { UserContext } from '../../contexts/UserContext'
 
 export default () => {
@@ -22,7 +19,9 @@ export default () => {
       if (token) {
         let res = await Api.checkToken(token);
         if (res) {
+          
           const objPayload = {
+            id_user: res.id_user,
             avatar: res.avatar,
             type: res.type,
             idCategory: 1

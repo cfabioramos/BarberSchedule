@@ -12,21 +12,23 @@ export const Scroller = styled.ScrollView`
 `;
 
 export const HeaderArea = styled.View`
-  margin-left: -10px;
-  margin-top:20px;
+  margin-left: -140px;
+  margin-top:40px;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 `;
 
 export const BackButton = styled.TouchableOpacity`
-  padding-right: 20px;
+margin-right: 50px;
+
 `;
 
 export const HeaderTitle = styled.Text`
   font-size: 20px;
   font-weight: bold;
   color: #ffffff;
+  padding-left: 50px;
 `;
 
 export const LoadingIcon = styled.ActivityIndicator`

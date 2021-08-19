@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-community/async-storage";
+import { TOKEN_KEY } from "../../util/Commons";
 import styled from "styled-components/native";
-
+import PersonIcon from "../../assets/person.svg";
+import LockIcon from "../../assets/lock.svg";
 import Api from "../../Api";
-
 import InputComponent from "../../components/InputComponent";
 import ImagePickerComponent from "../../components/ImagePickerComponent";
 
-import { Container, InputArea, CustomButton, CustomButtonText, ImageArea } from "./styles";
-
-import PersonIcon from "../../assets/person.svg";
-import LockIcon from "../../assets/lock.svg";
+import {
+  Container,
+  InputArea,
+  CustomButton,
+  CustomButtonText,
+  ImageArea,
+} from "./styles";
 
 export default () => {
   const navigation = useNavigation();
@@ -34,9 +39,9 @@ export default () => {
     }
   };
 
-  const handleLogoutClick = () => {
-    // invalida o token
-    // await Api.logout()
+  const handleLogoutClick = async () => {
+    // invalidar o token no servidor
+    await AsyncStorage.removeItem(TOKEN_KEY);
     navigation.reset({
       routes: [{ name: "SignIn" }],
     });

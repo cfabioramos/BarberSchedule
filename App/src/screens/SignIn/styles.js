@@ -24,6 +24,10 @@ export const CustomButtonText = styled.Text`
     color: #FFF;
 `;
 
+export const LoadingIcon = styled.ActivityIndicator`
+  margin-top: 50px;
+`;
+
 export const SignMessageButton = styled.TouchableOpacity`
     flex-direction: row;
     justify-content: center;

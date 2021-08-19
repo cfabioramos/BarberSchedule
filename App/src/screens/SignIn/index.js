@@ -12,6 +12,7 @@ import {
   InputArea,
   CustomButton,
   CustomButtonText,
+  LoadingIcon,
   SignMessageButton,
   SignMessageButtonText,
   SignMessageButtonTextBold,
@@ -28,7 +29,7 @@ import LockIcon from "../../assets/lock.svg";
 export default () => {
   const { dispatch: userDispatch } = useContext(UserContext);
   const navigation = useNavigation();
-
+  const [loading, setLoading] = useState(false);
   const [emailField, setEmailField] = useState("");
   const [passwordField, setPasswordField] = useState("");
   const [modalAttributes, setModalAttributes] = useState({
@@ -38,13 +39,15 @@ export default () => {
   });
 
   const handleSignClick = async () => {
-    if (emailField != "" && passwordField != "") {
-      const email = emailField.trim();
-      if (!validateEmail(email)) {
-        alert("Verifique o formato do E-mail");
-        return;
-      }
-      try {
+    setLoading(true);
+    try {
+      if (emailField != "" && passwordField != "") {
+        const email = emailField.trim();
+        if (!validateEmail(email)) {
+          alert("Verifique o formato do E-mail");
+          return;
+        }
+
         let json = await Api.signIn(email, passwordField);
         // let json = await Api.checkToken('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYXBpLmI3d2ViLmNvbS5iclwvZGV2YmFyYmVyXC9hcGlcL2F1dGhcL2xvZ2luIiwiaWF0IjoxNjAxNzc4MzM0LCJleHAiOjE2MDE3ODE5MzQsIm5iZiI6MTYwMTc3ODMzNCwianRpIjoiRGFGZG1QcDJVYnpxWWxoVCIsInN1YiI6NCwicHJ2IjoiODdlMGFmMWVmOWZkMTU4MTJmZGVjOTcxNTNhMTRlMGIwNDc1NDZhYSJ9.CqXZ6Z22PC87mTABD1htMgGLfc8MKdAqIZ4eQ3TdWo8')
         if (json && json.token) {
@@ -52,6 +55,7 @@ export default () => {
           userDispatch({
             type: "setUserContext",
             payload: {
+              id: json.id_user,
               avatar: json.avatar,
               type: json.type,
             },
@@ -61,13 +65,17 @@ export default () => {
             routes: [{ name: "MainTab" }],
           });
         }
-      } catch (error) {
-        setModalAttributes({
-          isModalVisible: true,
-          errorMessage: GET_ERROR_MESSAGE(error),
-          cb: setModalAttributes,
-        });
+        setLoading(false);
+      } else {
+        alert("preencha os campos");
       }
+    } catch (error) {
+      setLoading(false);
+      setModalAttributes({
+        isModalVisible: true,
+        errorMessage: GET_ERROR_MESSAGE(error),
+        cb: setModalAttributes,
+      });
     }
   };
 
@@ -81,7 +89,7 @@ export default () => {
     <Container>
       <ModalErro controlObject={modalAttributes} />
       <BarberLogo width="100%" height="23%" />
-
+      {loading && <LoadingIcon size="large" color="#FFFFFF" />}
       <InputArea>
         <InputComponent
           IconSvg={EmailIcon}

@@ -3,7 +3,8 @@ import { JsonBarberId, Appointments, Users } from "./Json";
 import AppTypedError from "./util/AppTypedError";
 import { TOKEN_KEY } from "./util/Commons";
 
-const BASE_API = "http://ec2-18-118-173-115.us-east-2.compute.amazonaws.com:8080/";
+const BASE_API =
+  "http://ec2-18-217-201-108.us-east-2.compute.amazonaws.com:8080/";
 
 const getRequestBody = (method, object) => {
   return {
@@ -72,20 +73,21 @@ export default {
     }
   },
 
+  
   logout: async () => {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
-
-    const req = await fetch(`${BASE_API}auth/logout`, {
+    /*const req = await fetch(`${BASE_API}auth/logout`, {
       method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
+        "barber-token": `${token}`,
       },
-      body: JSON.stringify({ token }),
     });
     const json = await req.json();
-    return json;
+    return json;*/
+    return null
   },
+
 
   findGeoLocation: async (lat, lng) => {
     const uri = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
@@ -103,7 +105,7 @@ export default {
 
   getBarbers: async (address) => {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
-    const uri = `${BASE_API}users?cep=${address.cep}&street=${address.street}&city=${address.city}`;
+    const uri = `${BASE_API}users?cep=${address.cep}&latitude=${address.latitude}&longitude=${address.longitude}&street=${address.street}&city=${address.city}`;
     const response = await fetch(uri, {
       method: "GET",
       headers: {
@@ -114,29 +116,67 @@ export default {
       let json = await response.json();
       return json;
     } else {
-      throw new AppTypedError(await response.text())
+      throw new AppTypedError(await response.text());
+    }
+  },
+
+  getFavoriteBarbers: async (address) => {
+    const token = await AsyncStorage.getItem(TOKEN_KEY);
+    const uri = `${BASE_API}users/32/favorites?latitude=${address.latitude}&longitude=${address.longitude}`;
+    const response = await fetch(uri, {
+      method: "GET",
+      headers: {
+        "barber-token": `${token}`,
+      },
+    });
+    if (response && response.ok) {
+      let json = await response.json();
+      return json;
+    } else {
+      throw new AppTypedError(await response.text());
     }
   },
 
   getBarber: async (id) => {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
-    // const req = await fetch(`${BASE_API}barbers/${id}?token=${token}`);
-    // const json = await req.json();
-    // console.log(json);
-    return JsonBarberId;
+    const uri = `${BASE_API}users/enterprises/${id}`;
+    const req = await fetch(uri,{
+      method: "GET",
+      headers: {
+        "barber-token": `${token}`,
+      },
+    });
+    const json = await req.json();
+    //console.log(json);
+    return json;
   },
 
   setFavoriteBarber: async (barberId) => {
-    /*const token = await AsyncStorage.getItem(TOKEN_KEY);
-    const req = await fetch(`${BASE_API}/barbers/${id}/favorite?token=${token}`, {
-      method: "PUT",
+    const token = await AsyncStorage.getItem(TOKEN_KEY);
+    const req = await fetch(`${BASE_API}/users/32/favorites/${barberId}`, {
+      method: "POST",
       headers: {
         Accept: "application/json",
-        "Content-Type": "application/json",
+        "barber-token": `${token}`,
       }
     });
-    return req;*/
-    return { error: "" };
+    const json = await req.json();
+    //console.log(json)
+    return json;
+  },
+
+  deleteFavoriteBarber: async (barberId) => {
+    const token = await AsyncStorage.getItem(TOKEN_KEY);
+    const response = await fetch(`${BASE_API}/users/32/favorites/${barberId}`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "barber-token": `${token}`,
+      }
+    });
+    if (response && !response.ok) {
+      throw new AppTypedError(await response.text());      
+    } 
   },
 
   createAppointment: async (
@@ -184,10 +224,10 @@ export default {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
     const uri = `${BASE_API}${entity}`;
     let varHeaders = {
-      "content-type": "multipart/form-data"
+      "content-type": "multipart/form-data",
     };
     if (token) {
-      varHeaders["barber-token"] = `${token}`
+      varHeaders["barber-token"] = `${token}`;
     }
 
     const response = await fetch(uri, {
@@ -199,7 +239,7 @@ export default {
       let json = await response.json();
       return json;
     } else {
-      throw new AppTypedError(await response.text())
+      throw new AppTypedError(await response.text());
     }
   },
 };

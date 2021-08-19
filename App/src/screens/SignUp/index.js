@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { DEFAULT_COLLOR_PALLET } from "../ColorsPalette";
 import { validateEmail } from "../../util/Validator";
 import ImagePickerComponent from "../../components/ImagePickerComponent";
-import { TOKEN_KEY, GET_ERROR_MESSAGE  } from "../../util/Commons";
+import { TOKEN_KEY, GET_ERROR_MESSAGE } from "../../util/Commons";
 import { UserContext } from "../../contexts/UserContext";
 import ModalErro from "../../components/ModalErro";
 import {
@@ -61,27 +61,28 @@ export default () => {
   });
 
   const handleSignClick = async () => {
-    if (nameField != "" && emailField != "" && passwordField != "") {
-      if (typeField == "") {
-        alert("Informe se é cliente ou estabelecimento");
-      } else {
-        const email = emailField.trim();
-        if (!validateEmail(email)) {
-          alert("Verifique o formato do E-mail");
-          return;
-        }
+    try {
+      if (nameField != "" && emailField != "" && passwordField != "") {
+        if (typeField == "") {
+          alert("Informe se é cliente ou estabelecimento");
+        } else {
+          const email = emailField.trim();
+          if (!validateEmail(email)) {
+            alert("Verifique o formato do E-mail");
+            return;
+          }
 
-        let objectImageData = Commons.getImageDataFromLocal(imageField);
-        let filename = objectImageData.filename;
-        let type = objectImageData.type;
+          let objectImageData = Commons.getImageDataFromLocal(imageField);
+          let filename = objectImageData.filename;
+          let type = objectImageData.type;
 
-        const formData = new FormData();
-        formData.append("image", { uri: imageField, name: filename, type });
-        formData.append("name", nameField);
-        formData.append("email", email);
-        formData.append("password", passwordField);
-        formData.append("type", typeField);
-        try {
+          const formData = new FormData();
+          formData.append("image", { uri: imageField, name: filename, type });
+          formData.append("name", nameField);
+          formData.append("email", email);
+          formData.append("password", passwordField);
+          formData.append("type", typeField);
+
           let json = await Api.submitMultipartWithFormData(
             "users",
             "POST",
@@ -101,14 +102,16 @@ export default () => {
               routes: [{ name: "MainTab" }],
             });
           }
-        } catch (error) {
-          setModalAttributes({
-            isModalVisible: true,
-            errorMessage: GET_ERROR_MESSAGE(error),
-            cb: setModalAttributes,
-          });
         }
+      } else {
+        alert("por favor, preencha os campos para efetuar o cadastro");
       }
+    } catch (error) {
+      setModalAttributes({
+        isModalVisible: true,
+        errorMessage: GET_ERROR_MESSAGE(error),
+        cb: setModalAttributes,
+      });
     }
   };
 

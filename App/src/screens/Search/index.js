@@ -62,6 +62,8 @@ export default () => {
         ...addressSearchObject,
         ...{
           cep: geoLocationData.address.postcode,
+          latitude: geoLocationData.lat,
+          longitude: geoLocationData.lon,
           street: geoLocationData.address.road,
           city: geoLocationData.address.city,
         },
@@ -129,7 +131,7 @@ export default () => {
     let newList = [...list];
     setList([]);
 
-    setList(newList.sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)));
+    setList(newList.sort((a, b) => (a.distance < b.distance ? -1 : a.distance > b.distance ? 1 : 0)));
   };
 
   return (

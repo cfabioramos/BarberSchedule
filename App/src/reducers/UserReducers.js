@@ -1,9 +1,10 @@
 export const initialState = {
+  id: null,
+  type: "",
   avatar: "",
+  idCategory: null,
   favorites: [],
   appointments: [],
-  type: "",
-  idCategory: null,
 };
 
 const uriAvatarPrefix =
@@ -14,6 +15,7 @@ export const UserReducer = (state, action) => {
     case "setUserContext":
       return {
         ...state,
+        id: action.payload.id,
         avatar: uriAvatarPrefix + action.payload.avatar,
         type: action.payload.type,
         idCategory: action.payload.idCategory,
