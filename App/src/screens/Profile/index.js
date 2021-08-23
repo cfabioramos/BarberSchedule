@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { TOKEN_KEY } from "../../util/Commons";
-import styled from "styled-components/native";
 import PersonIcon from "../../assets/person.svg";
 import LockIcon from "../../assets/lock.svg";
 import Api from "../../Api";

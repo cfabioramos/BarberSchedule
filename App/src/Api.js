@@ -1,10 +1,11 @@
 import AsyncStorage from "@react-native-community/async-storage";
-import { JsonBarberId, Appointments, Users } from "./Json";
+import { Appointments, Users } from "./Json";
 import AppTypedError from "./util/AppTypedError";
 import { TOKEN_KEY } from "./util/Commons";
 
+
 const BASE_API =
-  "http://ec2-18-217-201-108.us-east-2.compute.amazonaws.com:8080/";
+  "http://ec2-18-117-141-59.us-east-2.compute.amazonaws.com:8080/";
 
 const getRequestBody = (method, object) => {
   return {
@@ -73,7 +74,6 @@ export default {
     }
   },
 
-  
   logout: async () => {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
     /*const req = await fetch(`${BASE_API}auth/logout`, {
@@ -85,9 +85,8 @@ export default {
     });
     const json = await req.json();
     return json;*/
-    return null
+    return null;
   },
-
 
   findGeoLocation: async (lat, lng) => {
     const uri = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
@@ -120,9 +119,9 @@ export default {
     }
   },
 
-  getFavoriteBarbers: async (address) => {
+  getFavoriteBarbers: async (idUser,address) => {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
-    const uri = `${BASE_API}users/32/favorites?latitude=${address.latitude}&longitude=${address.longitude}`;
+    const uri = `${BASE_API}users/${idUser}/favorites?latitude=${address.latitude}&longitude=${address.longitude}`;
     const response = await fetch(uri, {
       method: "GET",
       headers: {
@@ -137,10 +136,10 @@ export default {
     }
   },
 
-  getBarber: async (id) => {
+  getBarber: async (idEnterprise) => {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
-    const uri = `${BASE_API}users/enterprises/${id}`;
-    const req = await fetch(uri,{
+    const uri = `${BASE_API}users/enterprises/${idEnterprise}`;
+    const req = await fetch(uri, {
       method: "GET",
       headers: {
         "barber-token": `${token}`,
@@ -151,32 +150,37 @@ export default {
     return json;
   },
 
-  setFavoriteBarber: async (barberId) => {
+  setFavoriteBarber: async (idUser, idEnterprise) => {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
-    const req = await fetch(`${BASE_API}/users/32/favorites/${barberId}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "barber-token": `${token}`,
+    const req = await fetch(
+      `${BASE_API}/users/${idUser}/favorites/${idEnterprise}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "barber-token": `${token}`,
+        },
       }
-    });
+    );
     const json = await req.json();
-    //console.log(json)
     return json;
   },
 
-  deleteFavoriteBarber: async (barberId) => {
+  deleteFavoriteBarber: async (idUser, idEnterprise) => {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
-    const response = await fetch(`${BASE_API}/users/32/favorites/${barberId}`, {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "barber-token": `${token}`,
+    const response = await fetch(
+      `${BASE_API}/users/${idUser}/favorites/${idEnterprise}`,
+      {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "barber-token": `${token}`,
+        },
       }
-    });
+    );
     if (response && !response.ok) {
-      throw new AppTypedError(await response.text());      
-    } 
+      throw new AppTypedError(await response.text());
+    }
   },
 
   createAppointment: async (

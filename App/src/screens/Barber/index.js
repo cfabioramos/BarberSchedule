@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Swiper from "react-native-swiper";
 import Stars from "../../components/Stars";
 import BarberModal from "../../components/BarberModal";
+import { UserContext } from "../../contexts/UserContext";
 
 import FavoriteFullIcon from "../../assets/favorite_full.svg";
 import FavoriteIcon from "../../assets/favorite.svg";
@@ -54,6 +55,8 @@ export default () => {
     stars: route.params.stars,
   });
 
+  const { state: user, dispatch: userDispatch } = useContext(UserContext);
+
   const [loading, setLoading] = useState(false);
   const [favorited, setFavorited] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
@@ -81,7 +84,7 @@ export default () => {
   const handleFavClick = async () => {
     if (!favorited) {
       try {
-        const favoriteRep = await Api.setFavoriteBarber(userInfo.id);
+        const favoriteRep = await Api.setFavoriteBarber(user.id, userInfo.id);
         if (favoriteRep.idUserFavorite) {
           setFavorited(true);
         }
@@ -90,7 +93,7 @@ export default () => {
       }
     } else {
       try {
-        await Api.deleteFavoriteBarber(userInfo.id);
+        await Api.deleteFavoriteBarber(user.id, userInfo.id);
         setFavorited(false);
       } catch (error) {
         alert("Erro: " + error);

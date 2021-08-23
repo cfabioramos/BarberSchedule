@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { RefreshControl } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 import Api from "../../Api";
 import BarberItem from "../../components/BarberItem";

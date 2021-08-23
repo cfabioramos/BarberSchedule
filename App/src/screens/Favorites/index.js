@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { RefreshControl } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
@@ -6,6 +6,7 @@ import Api from "../../Api";
 import BackIcon from "../../assets/back.svg";
 import BarberItem from "../../components/BarberItem";
 import ModalErro from "../../components/ModalErro";
+import { UserContext } from "../../contexts/UserContext";
 
 import {
   Container,
@@ -17,10 +18,8 @@ import {
   BackButton,
 } from "./styles";
 
-
 export default () => {
   const navigation = useNavigation();
-  const [watching, setWatching] = useState("");
   const [addressSearchObject, setAddressSearchObject] = useState({});
   const [modalAttributes, setModalAttributes] = useState({
     isModalVisible: false,
@@ -31,6 +30,8 @@ export default () => {
   const [list, setList] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
+  const { state: user } = useContext(UserContext);
+
   const getFavoriteBarbers = async () => {
     setLoading(true);
     setList([]);
@@ -40,45 +41,34 @@ export default () => {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-
       let location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Highest,
       });
-
-      let geoLocationData = await Api.findGeoLocation(
-        location.coords.latitude,
-        location.coords.longitude
-      );
       setAddressSearchObject({
         ...addressSearchObject,
         ...{
-          latitude: geoLocationData.lat,
-          longitude: geoLocationData.lon,
-          city: geoLocationData.address.city,
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude
         },
       });
-      setWatching(geoLocationData.address.city);
     })();
-    if (addressSearchObject && addressSearchObject.latitude) {
-      try {
-        let res = await Api.getFavoriteBarbers(addressSearchObject);
-        console.log(res);
-        setList(res);
-      } catch (error) {
-        setLoading(false);
-        setModalAttributes({
-          isModalVisible: true,
-          errorMessage: error.message,
-          cb: setModalAttributes,
-        });
-      }
+    try {
+      let res = await Api.getFavoriteBarbers(user.id, addressSearchObject);
+      setList(res);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setModalAttributes({
+        isModalVisible: true,
+        errorMessage: error.message,
+        cb: setModalAttributes,
+      });
     }
-    setLoading(false);
   };
 
   useEffect(() => {
     getFavoriteBarbers();
-  }, [watching]);
+  }, [addressSearchObject]);
 
   const handleBackButton = () => {
     navigation.goBack();

@@ -19,9 +19,8 @@ export default () => {
       if (token) {
         let res = await Api.checkToken(token);
         if (res) {
-          
           const objPayload = {
-            id_user: res.id_user,
+            id : res.id_user,
             avatar: res.avatar,
             type: res.type,
             idCategory: 1
