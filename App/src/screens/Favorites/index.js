@@ -35,7 +35,8 @@ export default () => {
   const getFavoriteBarbers = async () => {
     setLoading(true);
     setList([]);
-    (async () => {
+    let newAddressObj = null
+    await (async () => {
       let { status } = await Location.requestPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
@@ -44,16 +45,17 @@ export default () => {
       let location = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Highest,
       });
+      newAddressObj = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude
+      }
       setAddressSearchObject({
         ...addressSearchObject,
-        ...{
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude
-        },
+        ...newAddressObj,
       });
     })();
     try {
-      let res = await Api.getFavoriteBarbers(user.id, addressSearchObject);
+      let res = await Api.getFavoriteBarbers(user.id, newAddressObj);
       setList(res);
       setLoading(false);
     } catch (error) {
@@ -65,10 +67,13 @@ export default () => {
       });
     }
   };
-
+  
   useEffect(() => {
-    getFavoriteBarbers();
-  }, [addressSearchObject]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      getFavoriteBarbers();
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const handleBackButton = () => {
     navigation.goBack();

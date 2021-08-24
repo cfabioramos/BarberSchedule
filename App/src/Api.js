@@ -121,7 +121,8 @@ export default {
 
   getFavoriteBarbers: async (idUser,address) => {
     const token = await AsyncStorage.getItem(TOKEN_KEY);
-    const uri = `${BASE_API}users/${idUser}/favorites?latitude=${address.latitude}&longitude=${address.longitude}`;
+    const params = address && address.latitude ? `?latitude=${address.latitude}&longitude=${address.longitude}` : "";
+    const uri = `${BASE_API}users/${idUser}/favorites${params}`;
     const response = await fetch(uri, {
       method: "GET",
       headers: {

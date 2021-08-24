@@ -55,7 +55,7 @@ export default () => {
     stars: route.params.stars,
   });
 
-  const { state: user, dispatch: userDispatch } = useContext(UserContext);
+  const { state: user } = useContext(UserContext);
 
   const [loading, setLoading] = useState(false);
   const [favorited, setFavorited] = useState(false);
@@ -79,6 +79,7 @@ export default () => {
 
   const handleBackButton = () => {
     navigation.goBack();
+    
   };
 
   const handleFavClick = async () => {
@@ -95,6 +96,7 @@ export default () => {
       try {
         await Api.deleteFavoriteBarber(user.id, userInfo.id);
         setFavorited(false);
+
       } catch (error) {
         alert("Erro: " + error);
       }
