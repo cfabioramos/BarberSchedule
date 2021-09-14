@@ -6,7 +6,9 @@ import { UserContext } from "../contexts/UserContext";
 import Home from "../screens/Home";
 import Search from "../screens/Search";
 import Appointments from "../screens/Appointments";
+import Service from "../screens/Service";
 import Favorites from "../screens/Favorites";
+import AgendamentoAdm from"../screens/AgendamentoAdm";
 import Profile from "../screens/Profile";
 import EstablishmentProfile from "../screens/EstablishmentProfile";
 import ColorsPalette from "../screens/ColorsPalette";
@@ -16,6 +18,8 @@ import TodayIcon from "../assets/today.svg";
 import FavoriteIcon from "../assets/favorite.svg";
 import AccountIcon from "../assets/account.svg";
 import StarIcon from "../assets/star.svg";
+import ServiceIcon from "../assets/service.svg";
+import PayIcon from "../assets/house_number.svg";
 import { DEFAULT_COLLOR_PALLET } from "../screens/ColorsPalette";
 
 const Tab = createBottomTabNavigator();
@@ -52,7 +56,6 @@ const AvatarIcon = styled.Image`
 `;
 
 export default () => {
-
   const { state: user } = useContext(UserContext);
 
   const isUser = user.type === USER_TYPE || user.type === USER_ADMIN_TYPE;
@@ -69,7 +72,6 @@ export default () => {
         <Tab.Screen name="Appointments" component={Appointments} />
         <Tab.Screen name="Favorites" component={Favorites} />
         <Tab.Screen name="Profile" component={Profile} />
-        <Tab.Screen name="ColorsPalette" component={ColorsPalette} />
       </Tab.Navigator>
     );
   } else if (isUser) {
@@ -78,33 +80,36 @@ export default () => {
         initialRouteName="Home"
         tabBar={(props) => {
           const paramProps = { ...props, user };
-          return <CustomUserLessCategoryTabBar {...paramProps} />;
+          return <CustomHomeTabBar {...paramProps} />;
         }}
       >
         <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Appointments" component={Appointments} />
-        <Tab.Screen name="Profile" component={Profile} />
         <Tab.Screen name="ColorsPalette" component={ColorsPalette} />
+        <Tab.Screen name="Appointments" component={Appointments} />
+        <Tab.Screen name="Favorites" component={Favorites} />
+        <Tab.Screen name="Profile" component={Profile} />
       </Tab.Navigator>
     );
   } else {
     return (
       <Tab.Navigator
+        initialRouteName="EstablishmentProfile"
         tabBar={(props) => {
           const paramProps = { ...props, user };
           return <CustomUserLessCategoryTabBar {...paramProps} />;
         }}
-      >
+      > 
+        <Tab.Screen name="Service" component={Service}/>
+        <Tab.Screen name="ColorsPalette" component={ColorsPalette} />
+        <Tab.Screen name="Appointments" component={Appointments} />
         <Tab.Screen
           name="EstablishmentProfile"
           component={EstablishmentProfile}
         />
-        <Tab.Screen name="Appointments" component={Appointments} />
-        <Tab.Screen name="ColorsPalette" component={ColorsPalette} />
+        <Tab.Screen name="AgendamentoAdm" component={AgendamentoAdm}/>
       </Tab.Navigator>
     );
   }
-
 };
 
 const CustomUserCompleteTabBar = ({ state, navigation, user }) => (
@@ -151,21 +156,54 @@ const CustomUserCompleteTabBar = ({ state, navigation, user }) => (
         />
       )}
     </TabItem>
-
-    {user.type === "A" && (
-      <TabItem onPress={() => goTo("ColorsPalette")}>
-        <StarIcon
-          style={{ opacity: state.index === 5 ? 1 : 0.5 }}
-          width="24"
-          height="24"
-          fill="#FFFFFF"
-        />
-      </TabItem>
-    )}
   </TabArea>
 );
 
 const CustomUserLessCategoryTabBar = ({ state, navigation, user }) => (
+  <TabArea>
+    <TabItem onPress={() => navigation.navigate("Service")}>
+      <ServiceIcon
+        style={{ opacity: state.index === 0 ? 1 : 0.5 }}
+        width="24"
+        height="24"
+        fill="#FFFFFF"
+      />
+    </TabItem>
+    <TabItem onPress={() => navigation.navigate("ColorsPalette")}>
+      <StarIcon
+        style={{ opacity: state.index === 1 ? 1 : 0.5 }}
+        width="24"
+        height="24"
+        fill="#FFFFFF"
+      />
+    </TabItem>
+    <TabItemCenter onPress={() => navigation.navigate("Appointments")}>
+      <TodayIcon width="32" height="32" fill={DEFAULT_COLLOR_PALLET[1]} />
+    </TabItemCenter>
+    <TabItem>
+      <PayIcon
+        style={{ opacity: state.index === 3 ? 1 : 0.5 }}
+        width="24"
+        height="24"
+        fill="#FFFFFF"
+      />
+    </TabItem>
+    <TabItem onPress={() => navigation.navigate("EstablishmentProfile")}>
+      {user.avatar != "" ? (
+        <AvatarIcon source={{ uri: user.avatar }} />
+      ) : (
+        <AccountIcon
+          style={{ opacity: state.index === 4 ? 1 : 0.5 }}
+          width="24"
+          height="24"
+          fill="#FFFFFF"
+        />
+      )}
+    </TabItem>
+  </TabArea>
+);
+
+const CustomHomeTabBar = ({ state, navigation, user }) => (
   <TabArea>
     <TabItem onPress={() => navigation.navigate("Home")}>
       <HomeIcon
@@ -175,16 +213,38 @@ const CustomUserLessCategoryTabBar = ({ state, navigation, user }) => (
         fill="#FFFFFF"
       />
     </TabItem>
-    <TabItemCenter onPress={() => navigation.navigate("Appointments")}>
-      <TodayIcon width="32" height="32" fill={DEFAULT_COLLOR_PALLET[1]} />
-    </TabItemCenter>
-    <TabItem onPress={() => navigation.navigate("Profile")}>
-      <AccountIcon
-        style={{ opacity: state.index === 4 ? 1 : 0.5 }}
+    <TabItem onPress={() => navigation.navigate("ColorsPalette")}>
+      <StarIcon
+        style={{ opacity: state.index === 1 ? 1 : 0.5 }}
         width="24"
         height="24"
         fill="#FFFFFF"
       />
+    </TabItem>
+    <TabItemCenter onPress={() => navigation.navigate("Appointments")}>
+      <TodayIcon width="32" height="32" fill={DEFAULT_COLLOR_PALLET[1]} />
+    </TabItemCenter>
+
+    <TabItem onPress={() => navigation.navigate("Favorites")}>
+      <FavoriteIcon
+        style={{ opacity: state.index === 3 ? 1 : 0.5 }}
+        width="24"
+        height="24"
+        fill="#FFFFFF"
+      />
+    </TabItem>
+
+    <TabItem onPress={() => navigation.navigate("Profile")}>
+      {user.avatar != "" ? (
+        <AvatarIcon source={{ uri: user.avatar }} />
+      ) : (
+        <AccountIcon
+          style={{ opacity: state.index === 4 ? 1 : 0.5 }}
+          width="24"
+          height="24"
+          fill="#FFFFFF"
+        />
+      )}
     </TabItem>
   </TabArea>
 );

@@ -5,7 +5,13 @@ import { TOKEN_KEY } from "./util/Commons";
 
 
 const BASE_API =
-  "http://ec2-18-117-141-59.us-east-2.compute.amazonaws.com:8080/";
+  "http://ec2-18-191-181-158.us-east-2.compute.amazonaws.com:8080/";
+
+  
+
+
+ 
+
 
 const getRequestBody = (method, object) => {
   return {
@@ -147,7 +153,6 @@ export default {
       },
     });
     const json = await req.json();
-    //console.log(json);
     return json;
   },
 

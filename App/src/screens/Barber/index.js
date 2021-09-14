@@ -11,6 +11,8 @@ import BackIcon from "../../assets/back.svg";
 import NavPrevIcon from "../../assets/nav_prev.svg";
 import NavNextIcon from "../../assets/nav_next.svg";
 
+import { JsonBarberId } from "../../Json";
+
 import {
   Container,
   Scroller,
@@ -53,8 +55,11 @@ export default () => {
     avatar: route.params.avatar,
     name: route.params.name,
     stars: route.params.stars,
-  });
+    services: JsonBarberId.data.services,
+    photos : JsonBarberId.data.photos,
+    testimonials : JsonBarberId.data.testimonials,
 
+  });
   const { state: user } = useContext(UserContext);
 
   const [loading, setLoading] = useState(false);
