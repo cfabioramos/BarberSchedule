@@ -1,10 +1,13 @@
-import React, { useState, useContext } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { FlatList } from "react-native-gesture-handler";
 import BackIcon from "../../assets/back.svg";
-import ConfirmaIcon from "../../assets/back.svg";
+import Api from "../../Api";
 import { KeyboardAvoidingView, StyleSheet } from "react-native";
 import DeleteIcon from "../../assets/delete.svg";
+import ModalDelete from "../../components/ModalDelete";
+import ModalErro from "../../components/ModalErro";
+import { UserContext } from "../../contexts/UserContext";
 
 import {
   Scroller,
@@ -15,7 +18,6 @@ import {
   LoadingIcon,
   InputAreaService,
   InputService,
-  InputAreaValue,
   InputValue,
   ButtonAdd,
   ListArea,
@@ -24,24 +26,35 @@ import {
   ListaText2,
   ListButtonDelete,
   ListButtonArea,
+  LabelArea,
+  LabelText1,
+  LabelText2,
+  ButtonText,
 } from "./styles";
-import styled from "styled-components";
+import { json } from "express";
 
 export default () => {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
   const [serviceField, setServiceField] = useState("");
   const [serviceValue, setServiceValue] = useState("");
-  const [oterList, setOterList] = useState();
+  const [modalAttributes, setModalAttributes] = useState({
+    isModalVisible: false,
+    cb: setModalAttributes,
+  });
+
   const [nameService, setNameService] = useState([
-    { name: "FAZER UNHA", preco: "R$  30,00", id: "1" },
-    { name: "CORTE DE CABELO", preco: "R$  36,00", id: "2" },
-    { name: "FAZER BARBA", preco: "R$  15,00", id: "3" },
-    { name: "PINTAR CABELO", preco: "R$  55,00", id: "4" },
-    { name: "ESCOVA", preco: "R$  65,00", id: "5" },
-    { name: "PODOLOGIA", preco: "R$  40,00", id: "6" },
-    { name: "HIDRATAÇÃO", preco: "R$  45,00", id: "7" },
+    /*{ id: 1, name: "FAZER UNHA", price: "R$  30,00" },
+    { id: 2, name: "CORTE DE CABELO", price: "R$  36,00" },
+    { id: 3, name: "FAZER BARBA", price: "R$  15,00" },
+    { id: 4, name: "PINTAR CABELO", price: "R$  55,00" },
+    { id: 5, name: "ESCOVA", price: "R$  65,00" },
+    { id: 6, name: "PODOLOGIA", price: "R$  40,00" },
+    { id: 7, name: "HIDRATAÇÃO", price: "R$  45,00" },*/
   ]);
+  const [oterList, setOterList] = useState(nameService);
+  const { state: user } = useContext(UserContext);
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -51,11 +64,18 @@ export default () => {
     },
   });
 
-  const handleAddList = () => {
-    setLoading(true);
-  };
+  
 
-  const handleExcluirList = () => {};
+ 
+
+  const handleExcluirList = (id) => {
+    setModalAttributes({ isModalVisible: true, cb: setModalAttributes });
+    for (let i = 0; i < oterList.length; i++) {
+      if (oterList[i].id === id) {
+        setNameService(oterList.splice(i, 1));
+      }
+    }
+  };
 
   const handleBackButton = () => {
     navigation.goBack();
@@ -63,6 +83,7 @@ export default () => {
 
   return (
     <KeyboardAvoidingView behavior="height" style={styles.container}>
+      <ModalDelete controlObject={modalAttributes} />
       <HeaderArea>
         <BackButton onPress={handleBackButton}>
           <BackIcon width="35" height="35" fill="#FFFFFF" />
@@ -72,7 +93,7 @@ export default () => {
       <Container>
         <InputAreaService>
           <InputService
-            placeholder=" Nome  do  serviço"
+            placeholder="Nome  do  serviço"
             placeholderTextColor="#FFFFFF"
             value={serviceField}
             onChangeText={(t) => setServiceField(t)}
@@ -84,37 +105,40 @@ export default () => {
             value={serviceValue}
             onChangeText={(t) => setServiceValue(t)}
           />
-          <ButtonAdd onPress={handleAddList}>
-            <ConfirmaIcon width="35" height="35" fill="#FFFFFF" />
+          <ButtonAdd >
+            <ButtonText>ADICIONAR</ButtonText>
           </ButtonAdd>
         </InputAreaService>
 
         {loading && <LoadingIcon size="large" color="#FFFFFF" />}
 
         <ListArea>
+          <LabelArea>
+            <LabelText1>Serviço</LabelText1>
+            <LabelText2>Preço</LabelText2>
+          </LabelArea>
           <FlatList
-            data={nameService}
+            style={{ flex: 1 }}
+            data={oterList}
             keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-              <ListButtonArea>
-              <ListButton
-                onPress={() =>
-                  navigation.navigate("AgendamentoAdm", {
-                    nome: `${item.name}`,
-                  })
-                }
-              >
-                <ListaText1>
-                  {item.name}
-                </ListaText1>
-                <ListaText2>
-                  {item.preco} 
-                </ListaText2>
-              </ListButton>
-              <ListButtonDelete onPress={()=>navigation.goBack()}>
-                <DeleteIcon width="20" height="20" fill="#FFFFFF" />
-              </ListButtonDelete>
-              </ListButtonArea>
+              <LabelArea>
+                <ListButtonArea>
+                  <ListButton
+                    onPress={() =>
+                      navigation.navigate("AgendamentoAdm", {
+                        nome: `${item.name}`,
+                      })
+                    }
+                  >
+                    <ListaText1>{item.name}</ListaText1>
+                    <ListaText2>{item.price}</ListaText2>
+                  </ListButton>
+                  <ListButtonDelete onPress={() => handleExcluirList(item.id)}>
+                    <DeleteIcon width="20" height="20" fill="#FFFFFF" />
+                  </ListButtonDelete>
+                </ListButtonArea>
+              </LabelArea>
             )}
           />
         </ListArea>

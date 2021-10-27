@@ -8,7 +8,7 @@ import Search from "../screens/Search";
 import Appointments from "../screens/Appointments";
 import Service from "../screens/Service";
 import Favorites from "../screens/Favorites";
-import AgendamentoAdm from"../screens/AgendamentoAdm";
+import AgendamentoAdm from "../screens/AgendamentoAdm";
 import Profile from "../screens/Profile";
 import EstablishmentProfile from "../screens/EstablishmentProfile";
 import ColorsPalette from "../screens/ColorsPalette";
@@ -19,7 +19,7 @@ import FavoriteIcon from "../assets/favorite.svg";
 import AccountIcon from "../assets/account.svg";
 import StarIcon from "../assets/star.svg";
 import ServiceIcon from "../assets/service.svg";
-import PayIcon from "../assets/house_number.svg";
+import PayIcon from "../assets/pay2.svg";
 import { DEFAULT_COLLOR_PALLET } from "../screens/ColorsPalette";
 
 const Tab = createBottomTabNavigator();
@@ -92,22 +92,24 @@ export default () => {
     );
   } else {
     return (
-      <Tab.Navigator
-        initialRouteName="EstablishmentProfile"
-        tabBar={(props) => {
-          const paramProps = { ...props, user };
-          return <CustomUserLessCategoryTabBar {...paramProps} />;
-        }}
-      > 
-        <Tab.Screen name="Service" component={Service}/>
-        <Tab.Screen name="ColorsPalette" component={ColorsPalette} />
-        <Tab.Screen name="Appointments" component={Appointments} />
-        <Tab.Screen
-          name="EstablishmentProfile"
-          component={EstablishmentProfile}
-        />
-        <Tab.Screen name="AgendamentoAdm" component={AgendamentoAdm}/>
-      </Tab.Navigator>
+      
+        <Tab.Navigator
+          initialRouteName="EstablishmentProfile"
+          tabBar={(props) => {
+            const paramProps = { ...props, user };
+            return <CustomUserLessCategoryTabBar {...paramProps} />;
+          }}
+        >
+          <Tab.Screen name="Service" component={Service} />
+          <Tab.Screen name="ColorsPalette" component={ColorsPalette} />
+          <Tab.Screen name="Appointments" component={Appointments} />
+          <Tab.Screen
+            name="EstablishmentProfile"
+            component={EstablishmentProfile}
+          />
+          <Tab.Screen name="AgendamentoAdm" component={AgendamentoAdm} />
+        </Tab.Navigator>
+      
     );
   }
 };

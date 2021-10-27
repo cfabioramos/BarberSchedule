@@ -17,10 +17,11 @@ export default () => {
     const checkToken = async () => {
       const token = await AsyncStorage.getItem(TOKEN_KEY);
       if (token) {
+        console.log(token)
         let res = await Api.checkToken(token);
         if (res) {
           const objPayload = {
-            id : res.id_user,
+            id : res.id,
             avatar: res.avatar,
             type: res.type,
             idCategory: 1

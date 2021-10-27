@@ -38,6 +38,7 @@ const Home = () => {
 
   const [categoryName, setCategoryName] = useState("");
   const [oterList, setOterList] = useState(typeService);
+  
   useEffect(() => {
     if (categoryName === "") {
       setOterList(typeService);
